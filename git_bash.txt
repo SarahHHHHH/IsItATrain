@@ -1,0 +1,22 @@
+Config:
+    git config --global user.name 'Your Name'
+    git config --global user.email you@domain.com
+
+
+To commit, do all of the following:
+    git add <AnyNewFile>
+
+    git commit -m          //output commit messages
+     or
+    git commit -a          //automatically add tracked files
+
+    git push -u origin master          //add upstream tracking
+     or
+    git push origin master
+
+
+Download:
+    git pull origin master
+    or
+    git pull -u origin master
+
