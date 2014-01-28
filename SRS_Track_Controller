@@ -1,0 +1,94 @@
+Software Requirements Specifications
+For: Track Controller(s) / Wayside Controller(s)
+By Derrick Ward
+
+Note: SRS organized by feature
+
+
+External Interface Requirements:
+
+I.	User Interfaces
+a.	Manual Override Interface
+b.	Display which tracks are busy
+c.	Display which track trains are one
+d.	Display current and previous Velocity, Authority, and Distance Instructions from CTC
+
+II.	Hardware Interface
+a.	Two-way Communication Bridge to Track Circuit
+b.	One-way Communication Bridge from CTC Office
+
+III.	Software Interface
+a.	Wayside Controller has objects passed to it from CTC Office Object
+b.	Wayside Controller has objects passed to it from Track Circuit
+c.	Wayside Controller passes objects to the Track Circuit
+
+IV.	Communication Interface
+a.	There is a one-way interface from the CTC Office
+b.	There is a two-way interface between the Track Circuit 
+
+
+System Features:
+
+I.	System Feature 1: Set Switches
+a.	Introduction/Purpose of feature
+i.	Allows a train to switch from one track to another
+
+b.	Stimulus/Response sequence
+i.	Stimulus: CTC Office signals that Train A is to switch to Track 1.
+ii.	Response: Send signal to Track Circuit to change Train A to Track 1.
+
+c.	Associated Function Requirements
+i.	Functional Requirement 1: Pull Instructions from CTC Office
+ii.	Functional Requirement 2: Verify if Track is available
+iii.	Functional Requirement 3: Sets Lights on track: to Red.
+iv.	Functional Requirement 4: Send Signal to Track Circuit to Switch Train Tracks
+
+II.	System Feature 2: Set Lights
+a.	Introduction/Purpose of feature
+i.	Allows environment to know when a train is coming or not.
+
+b.	Stimulus/Response sequence
+i.	CTC Office signals for a Train to change tracks.
+ii.	Send a Red Light Signal to that track.
+
+i.	Track Circuit signals a train is coming on the track.
+ii.	Change Lights on the track to Red.
+
+i.	Track Circuit signals no train is on the track.
+ii.	Change lights on the track to Green. 
+
+c.	Associated Function Requirements
+i.	Functional Requirement 1: Pull Instructions from CTC Office
+ii.	Functional Requirement 2: Pull Instructions from Track Circuit
+iii.	Functional Requirement 3: Verify if Track is available
+iv.	Functional Requirement 4: Set Lights on track
+
+III.	System Feature 3: Pass along Velocity, Authority and Distance Information
+a.	Introduction/Purpose of feature
+i.	To pass along the Velocity, Authority, and Distance a train can travel on a track.
+
+b.	Stimulus/Response sequence
+i.	CTC pushes Velocity, Authority, and Distance Instructions
+ii.	Push Velocity, Authority, Distance Instructions to Track Circuit
+
+c.	Associated Function Requirements
+i.	Functional Requirement 1: Pull Instructions from CTC Office
+ii.	Functional Requirement 2: Pass VAD Info
+
+
+Performance Requirements
+
+I.	Instructions from Track Circuit must be pulled at least every 0.333 seconds.
+II.	Instructions from CTC Office must be pulled at least every 0.333 seconds.
+III.	Instruction must be pushed to Track Circuit at least every 0.333 seconds.
+
+
+Design Constraints
+
+I.	Each Wayside Controller needs to be visible from the user Interface
+
+
+Software System Attributes
+
+
+Other Requirements
