@@ -1,0 +1,174 @@
+Table of Contents
+1. Introduction 
+	1.1 Purpose
+		
+	1.2 Scope
+		
+	1.3 Definitions, acronyms, and abbreviations 
+		
+	1.4 References
+
+	1.5 Overview
+
+2. Overall description
+	2.1 Product perspective
+	
+	2.2 User characteristics
+
+	2.3 Assumptions and dependencies
+
+3. Specific requirements
+	3.1 External interface requirements
+		3.1.1 Software interfaces
+			
+		3.1.2 Other interfaces
+
+	3.2 System features
+		3.2.1 Acceleration
+
+		3.2.2 Doors
+			
+		3.2.3 Lights
+			
+		3.2.4 Position
+			
+		3.2.5 Velocity
+			
+		3.2.6 Power
+			
+		3.2.7 Mass
+			
+		3.2.8 Length
+			
+		3.2.9 Error
+
+		3.2.10 People
+			
+	3.3 Performance requirements 
+		
+	3.5 Software system attributes 
+		3.5.1 Reliability
+
+		2.5.2 Availability
+
+		3.5.3 Portability
+
+
+1. Introduction 
+
+	1.1 Purpose
+		This document details the requirements of the train model, mainly simulating an train's actual behavior as concerns the accompanying train controller and track modules. The development team, SHWOZ, has written it for their own perusal, and that of the customer, the North Shore Extension of the Port Authority of Allegheny County (PAAC).
+
+	1.2 Scope
+		The following sections describe the requirements of the train model, called Train Model, including the physical properties of a train, with cars, which the software must model, and the interactions between the train module and the other modules. It doesn't describe in detail the functions of the other modules, or what to do if you've spotted a train in the wild.
+		The train model must simulate those parts of a "generic" physical train which interact with control software or human operators (would say engineers, but would be ambiguous). The train model will do this as part of a larger software incorporating train, track, train control, track control, and centralized traffic control (CTC), and won't interact directly with users.
+
+	1.3 Definitions, acronyms, and abbreviations 
+		CTC: Centralized Traffic Control
+		IEEE: Institute of Electrical and Electronics Engineers
+		PAAC: Port Authority of Allegheny County
+
+	1.4 References
+		IEEE-830-1993 Software Requirements Specification
+
+	1.5 Overview
+		The following specifications begin with an overall description of the product, and continue to specifics ordered by feature.
+
+2. Overall description
+
+	2.1 Product perspective
+		2.1.1 The overall software gets information about a train's behaviors, position, and other physical facts from the train model. The train model takes orders from the train controller, and gives no orders to anything. The train model also responds to input from the track, and gives input (but not instructions) to the train controller. It has no human user interface.
+
+	2.2 User characteristics
+		2.2.1 Only other parts of the railway control software use the train model. No human directly interacts with it.
+
+	2.3 Assumptions and dependencies
+		2.5.1 The train requires instruction from the train controller to make decisions such as when to accelerate.
+		2.5.2 The train requires input from tracks to relay to the train controller.
+		2.5.3 The default assumed operating system is Windows 7.
+		2.5.4 All components of the train are assumed to be perfectly generic.
+		2.5.5 The train is assumed to operate in an earth-like environment.
+
+3. Specific requirements
+
+	3.1 External interface requirements
+
+		3.1.1 Software interfaces
+			3.1.1.1 Receives instructions from train controller.
+			3.1.1.2 Takes input from track.
+			3.1.1.3 Passes input from track to train controller.
+			3.1.1.4 Interface timed to every 0.33 seconds.
+
+		3.1.2 Other interfaces
+			There are no other interfaces.
+
+	3.2 System features
+
+		3.2.1 Acceleration
+			3.2.1.1 The train has an acceleration value, changes to which adjust the train's course.
+			3.2.1.2 The power given to the train determines its acceleration.
+			3.2.1.3 The train can speed up and slow down as it follows the track. It can't choose to turn.
+			3.2.1.4 The train can't accelerate/decelerate at a rate greater than its safety restrictions allow.
+
+		3.2.2 Doors
+			3.2.2.1 The train has objects representing doors, which open and close at times when travelers would board or disembark.
+			3.2.2.2 The train controller gives the signal to the train to open or close doors.
+			3.2.2.3 The doors can be opened or closed. They need not simulate any point in between.
+			3.2.2.4 One value represents the doors' open/closed state. They all open/close together.
+			3.2.2.5 Doors may not be open while the train is in motion.
+
+		3.2.3 Lights
+			3.2.3.1 The train has objects representing lights, which light their cars.
+			3.2.3.2 The train controller tells the train to turn the lights on or off, too.
+			3.2.3.3 One value represents the lights' on/off state. They all turn on/off together.
+			3.2.3.4 The lights are on IFF the train is in a space marked as dark, such as a tunnel.
+
+		3.2.4 Position
+			3.2.4.1 The train has a position relative to the track map.
+			3.2.4.2 The track reports the train's position.
+
+		3.2.5 Velocity
+			3.2.5.1 The train has a value for speed and direction, which determines how its position changes as simulated time goes on.
+			3.2.5.2 The acceleration determines velocity.
+			3.2.5.3 The train reports its velocity to the track.
+
+		3.2.6 Power
+			3.2.6.1 The train has a value for power, which, along with its mass, determines its acceleration.
+			3.2.6.2 The train controller sends the power value to the train.
+
+		3.2.7 Mass
+			3.2.7.1 The train has a representation of its mass, which, along with power, determines its acceleration.
+			3.2.7.2 The train has a base mass, the mass of the engine.
+			3.2.8.3 The train gains a standard amount of mass for each person that boards, and another standard amount for each car attached. It loses the same amount for each passenger that leaves, and each car detached.
+			3.2.8.3 Mass can't be negative.
+
+		3.2.8 Length
+			3.2.8.1 The train has a length, which determines the amount of track it occupies.
+			3.2.8.2 The train has a base length, the length of the engine.
+			3.2.8.3 The train gains a standard amount of length for each car attached, and loses the same amount for each car detached.
+			3.2.8.4 Length can't be negative.
+
+		3.2.9 Error
+			3.2.9.1 At random, the train produces an anomalous acceleration in response to the power it's given, simulating real-world unpredictability.
+			3.2.9.2 The deviation of the acceleration from the value determined by power and mass should be randomly determined, within fixed a maximum and minimum value.
+
+		3.2.10 People
+			3.2.10.1 The train keeps track of the number of people aboard it.
+			3.2.10.2 All people in this simulation are generic, and have no features aside from quantity.
+
+	3.3 Performance requirements 
+		3.3.1 The model must move at enough speed to complete around an hour of simulated travel in no more than a minute or two of real time.
+		3.3.2 The model only needs to support one user at a time.
+		3.3.3 The numerical outputs of the model should be accurate.
+
+	3.5 Software system attributes 
+
+		3.5.1 Reliability
+			The train model should behave like a train; if an error occurs, it would be best if the error handling causes the train to derail and land on a stagecoach.
+
+		2.5.2 Availability
+			The train model should be available as long as the software's other systems are operating.
+
+		3.5.3 Portability
+			The module should be written in Java and made portable between an unknown variety of operating systems. As a rule of thumb, if it runs on a partner's computer, it should be fine.
+
