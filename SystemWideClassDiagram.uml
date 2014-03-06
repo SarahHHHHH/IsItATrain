@@ -849,10 +849,10 @@
 <XPD:OBJ name="OwnedViews[13]" type="UMLAssociationView" guid="liPBrScUbEKsFrM/3nIZBgAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
-<XPD:ATTR name="Points" type="Points">564,291;492,428;160,428;101,237</XPD:ATTR>
+<XPD:ATTR name="Points" type="Points">560,433;492,428;160,428;101,237</XPD:ATTR>
 <XPD:REF name="Model">33yX+GXdfE+KSOVgzqkidgAA</XPD:REF>
 <XPD:REF name="Head">lyJiQRAwYUqZQpSigFz4PwAA</XPD:REF>
-<XPD:REF name="Tail">Gf8MYgrTO0eBkorMxp5+NwAA</XPD:REF>
+<XPD:REF name="Tail">eDq8wGjAP0SbQGlNu3MC9AAA</XPD:REF>
 <XPD:OBJ name="NameLabel" type="EdgeLabelView" guid="gLb4pXF1ekSzTkcRFaQXrAAA">
 <XPD:ATTR name="Visible" type="boolean">False</XPD:ATTR>
 <XPD:ATTR name="Alpha" type="real">1.5707963267949</XPD:ATTR>
@@ -1003,7 +1003,7 @@
 <XPD:REF name="Views[1]">h4jXlbsOsEeKenFedULwGgAA</XPD:REF>
 <XPD:REF name="Views[2]">eeM9A9zjC0OcjseHNkSmcgAA</XPD:REF>
 <XPD:REF name="Views[3]">pPIlo14Qbk2mZF1LORLkSgAA</XPD:REF>
-<XPD:ATTR name="#Operations" type="integer">9</XPD:ATTR>
+<XPD:ATTR name="#Operations" type="integer">10</XPD:ATTR>
 <XPD:OBJ name="Operations[0]" type="UMLOperation" guid="d+1ATrLookyclCXYegl9DgAA">
 <XPD:ATTR name="Name" type="string">getSpeed</XPD:ATTR>
 <XPD:REF name="Owner">qSOOWHDAf0OsVgbp5VrfhQAA</XPD:REF>
@@ -1092,6 +1092,10 @@
 </XPD:OBJ>
 <XPD:OBJ name="Operations[8]" type="UMLOperation" guid="sT6zCMOF0ESyB3n4/r/Z/QAA">
 <XPD:ATTR name="Name" type="string">plcVal</XPD:ATTR>
+<XPD:REF name="Owner">qSOOWHDAf0OsVgbp5VrfhQAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Operations[9]" type="UMLOperation" guid="DCOPGQ/6Zki1pdNtEdkF/wAA">
+<XPD:ATTR name="Name" type="string">checkSpeed</XPD:ATTR>
 <XPD:REF name="Owner">qSOOWHDAf0OsVgbp5VrfhQAA</XPD:REF>
 </XPD:OBJ>
 <XPD:ATTR name="#Associations" type="integer">4</XPD:ATTR>
@@ -1268,14 +1272,13 @@
 <XPD:ATTR name="Name" type="string">getAcceleration</XPD:ATTR>
 <XPD:REF name="Owner">uOwLKaR36km0+FgMT+TKsQAA</XPD:REF>
 </XPD:OBJ>
-<XPD:ATTR name="#Associations" type="integer">7</XPD:ATTR>
+<XPD:ATTR name="#Associations" type="integer">6</XPD:ATTR>
 <XPD:REF name="Associations[0]">IClun1vrOkiHCGkWDSpk9gAA</XPD:REF>
 <XPD:REF name="Associations[1]">JbobCDTWyUCsSXw193mZQwAA</XPD:REF>
 <XPD:REF name="Associations[2]">Z4zlJumaykelY5HK7UmJDwAA</XPD:REF>
 <XPD:REF name="Associations[3]">/lxwAsFAkUSAsf3q1j4jXQAA</XPD:REF>
 <XPD:REF name="Associations[4]">h/1gxfIZ8UC3pb2q/CCg3QAA</XPD:REF>
 <XPD:REF name="Associations[5]">yNuQjXGGXkO8w59ND4SrlgAA</XPD:REF>
-<XPD:REF name="Associations[6]">BeAotEFbSkiQWNIBy9SIEwAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="OwnedElements[4]" type="UMLClass" guid="tJ1hq6OsWkWJOPXkiDFLegAA">
 <XPD:ATTR name="Name" type="string">TrainController</XPD:ATTR>
@@ -1346,11 +1349,12 @@
 <XPD:ATTR name="Name" type="string">passOrDeny</XPD:ATTR>
 <XPD:REF name="Owner">tJ1hq6OsWkWJOPXkiDFLegAA</XPD:REF>
 </XPD:OBJ>
-<XPD:ATTR name="#Associations" type="integer">4</XPD:ATTR>
+<XPD:ATTR name="#Associations" type="integer">5</XPD:ATTR>
 <XPD:REF name="Associations[0]">u/LazX+Aikug0XiD19uwrwAA</XPD:REF>
 <XPD:REF name="Associations[1]">0t06NT+gY0GnqPkyf7DIsAAA</XPD:REF>
 <XPD:REF name="Associations[2]">ZHF1ZSTO3k6CPwyRsojKVgAA</XPD:REF>
 <XPD:REF name="Associations[3]">zLnlmub2/06HVr1VZ0UwmQAA</XPD:REF>
+<XPD:REF name="Associations[4]">BeAotEFbSkiQWNIBy9SIEwAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="OwnedElements[5]" type="UMLAssociation" guid="JLBaVxuA6kGMsebib+xnmgAA">
 <XPD:REF name="Namespace">TrvKOW9MW0+po0sPb6iLKQAA</XPD:REF>
@@ -1638,7 +1642,7 @@
 <XPD:ATTR name="#Connections" type="integer">2</XPD:ATTR>
 <XPD:OBJ name="Connections[0]" type="UMLAssociationEnd" guid="BeAotEFbSkiQWNIBy9SIEwAA">
 <XPD:REF name="Association">33yX+GXdfE+KSOVgzqkidgAA</XPD:REF>
-<XPD:REF name="Participant">uOwLKaR36km0+FgMT+TKsQAA</XPD:REF>
+<XPD:REF name="Participant">tJ1hq6OsWkWJOPXkiDFLegAA</XPD:REF>
 <XPD:ATTR name="#Views" type="integer">4</XPD:ATTR>
 <XPD:REF name="Views[0]">6rc2EWGuXEqsBI53OiyBxgAA</XPD:REF>
 <XPD:REF name="Views[1]">hGuvXcyWjkC/jbzs+KLuQAAA</XPD:REF>
