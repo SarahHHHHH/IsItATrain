@@ -1,0 +1,6 @@
+
+public class SafeControl {
+	double trainPhysicalSpeedLimit=80.0;
+	int trainAnnoucmentLength=70;
+
+}

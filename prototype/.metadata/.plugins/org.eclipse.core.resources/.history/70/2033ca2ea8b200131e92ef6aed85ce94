@@ -1,0 +1,47 @@
+import java.awt.event.*;
+import java.io.*;
+import javax.swing.*;
+import java.awt.*;
+import java.util.*;
+
+public class TrainControl 
+{
+	public double trainSpeedLimit=100;
+	public double trackSpeedLimi=120;
+	public double safteSpeedLimit;
+	public double safeSpeed;
+	public double safeAcceleration;
+	public double safeLightState;
+	public double safeDoorState;
+	public double safeAuthority;
+	public double safeTemp;
+	public double currentSpeed;
+	public double currentSpeedLimit;
+	public double currentAuthority;
+	public double currentTemp;
+	public double 
+	
+	public TrainControl()
+	{
+		TrainModel traincart=new TrainModel();
+		TrainControllerGUI trainGUI=new TrainControllerGUI();
+	}
+
+	
+	public void getSafeSpeedLimit()
+	{
+		return speedLimit;
+	}
+	
+	public void putSafePower()
+	{
+		train.setSafePower(safePower);
+	}
+	
+	public void putSafeDoorSignal()
+	{
+		train.setSafePower(safePower);
+	}
+	
+
+}

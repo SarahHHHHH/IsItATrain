@@ -1,0 +1,69 @@
+import java.awt.event.*;
+import java.io.*;
+import javax.swing.*;
+import java.awt.*;
+import java.util.*;
+
+public class TrainControllerGUI 
+{
+	private JFrame trainFrame;
+	private JPanel trainPanel;
+	private JButton trainBrake, emergencyBrake, turnLight, turnDoor, setSpeed, setAuthority, setSpeedLimit;
+	private JTextField currentSpeed, currentSpeedLimit, currentAcceleration, currentLight, currentDoor;
+	private JTextField setSpeedField, setAuthorityField, setSpeedLimitField;
+	private JLabel currentSpeedLabel, currentSpeedLimitLabel, currentAccelerationLabel, currentLightLabel, currentDoorLabel, 
+	setSpeedLabel, setAuthorityLabel, setSpeedLimitLabel;
+	private JTextArea errorReport;
+	private double speedBackup=35.0;
+	private double speedLimitBackup=70.0;
+	private int doorStatus=1; 
+	private int lightStatus=0;
+	double currentSpeedValue, currentSpeedLimitValue, currentAccelerationValue;
+	int currentLightValue, currentDoorValue;
+	
+	public void initiate()
+	{
+		trainFrame=new JFrame("Prototype GUI");
+		trainPanel=new JPanel();
+		trainBrake=new JButton("Brake");
+		emergencyBrake=new JButton("Emergency Brake");
+		turnLight=new JButton("Switch Light");
+		turnDoor=new JButton("Switch Door");
+		setSpeed=new JButton("Set Speed");
+		setSpeedLimit=new JButton("Set Speed Limit");
+		setAuthority=new JButton("Set Authority");
+		currentSpeedLabel=new JLabel("Current Speed");
+		currentSpeedLimitLabel=new JLabel("Current Speed Limit");
+		currentAccelerationLabel=new JLabel("Current Acceleration");
+		currentLightLabel=new JLabel("Current Light Stat");
+		currentDoorLabel=new JLabel("Current Door Stat");
+		setSpeedLabel=new JLabel("Set Speed");
+		setAuthorityLabel=new JLabel("Set Authority");
+		setSpeedLimitLabel=new JLabel("Set Speed Limit");
+		currentSpeed=new JTextField();
+		currentSpeedLimit=new JTextField();
+		currentAcceleration=new JTextField();
+		currentLight=new JTextField();
+		currentDoor=new JTextField();
+		setSpeedField=new JTextField();
+		setAuthorityField=new JTextField();
+		setSpeedLimitField=new JTextField();
+		errorReport=new JTextArea();
+		trainPanel.add(trainBrake);
+		trainPanel.add(emergencyBrake);
+		trainPanel.add(turnLight);
+		trainPanel.add(turnDoor);
+		trainPanel.add(setSpeed);
+		trainPanel.add(setSpeedLimit);
+		trainPanel.add(setAuthority);
+		trainPanel.add(currentSpeedLabel);
+		trainPanel.add(currentSpeedLimitLabel);
+		trainPanel.add(currentAccelerationLabel);
+		trainPanel.add()
+	}
+	
+	
+	
+	
+
+}

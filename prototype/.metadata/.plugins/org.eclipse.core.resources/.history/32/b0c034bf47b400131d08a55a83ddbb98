@@ -1,0 +1,73 @@
+import java.lang.Math.*;
+
+public class SafeControl 
+{
+	double trainPhysicalSpeedLimit=120.0;
+	double tempMax=90;
+	double tempMin=40;
+	double trackSpeedLimit;
+	
+	
+	public SafeControl(double limit)
+	{
+		trackSpeedLimit=limit;
+	}
+	
+	double findMin(double min1, double min2)
+	{
+		if(min1<min2)
+			return min1;
+		else 
+			return min2;
+	}
+	
+	double checkTrainSpeedLimit(double suggetSpeedLimit)
+	{
+		if(suggetSpeedLimit>findMin(trainPhysicalSpeedLimit,trackSpeedLimit))
+			suggetSpeedLimit=findMin(trainPhysicalSpeedLimit,trackSpeedLimit);
+		return suggetSpeedLimit;
+	}
+	
+	double checkTrainSpeed(double suggestedSpeed, double suggestedSpeedLimit)
+	{
+		if(suggestedSpeed>suggestedSpeedLimit)
+			suggestedSpeed=suggestedSpeedLimit;
+		return suggestedSpeed;
+	}
+	
+	int checkDoorStatusChange(double currentSpeed, int doorStat)
+	{
+		System.out.println(currentSpeed);
+		if(currentSpeed>0)
+		{
+			doorStat=0;
+			return doorStat;
+		}
+		else
+		{
+			return doorStat;
+		}
+	}
+	
+	int checkLightStatusChange(int lightStat)
+	{
+		return lightStat;
+	}
+	
+	double checkTrainTemp(double suggestedTemp)
+	{
+		if(suggestedTemp>tempMax)
+			suggestedTemp=tempMax;
+		else if(suggestedTemp<tempMin)
+			suggestedTemp=tempMin;
+		return suggestedTemp;
+	}
+	
+	double checkAuthority(double suggestedAuthority)
+	{
+		if(suggestedAuthority>6000)
+			suggestedAuthority=6000;
+		return suggestedAuthority;
+	}
+
+}

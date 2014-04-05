@@ -1,0 +1,270 @@
+
+import java.lang.Math;
+
+public class TrainModel
+{
+	private int trainID;
+	public float speed; //the current speed
+	public float speedLimit; //physical limit
+	public float power;  //kw
+	public float powerMax;  //physical limit
+	public float acceleration;
+	public float accelerationMax;  
+	public float temperature;
+	public float totalMass; //t
+	public double gradient = 0;
+	public boolean doorCondition;
+	public boolean lightCondition;
+	public boolean brake;
+	public boolean emergencyBrake;
+	
+	public float trackFriction;
+	
+	public int currentBlockNumber;
+	
+	public TrainModel(int trainID, float speedMax, float powerMax, float totalMass)
+	{
+		this.trainID = trainID;
+		this.speedLimit = speedLimit;
+		this.powerMax = powerMax;
+		this.totalMass = totalMass;
+		this.gradient = 0.0;
+		this.temperature = (float) 70.0;
+		this.brake = false;
+		this.emergencyBrake = false;
+		this.accelerationMax = (float) 0.65;
+		this.trackFriction = 0.08f;
+	}
+	
+	public TrainModel()
+	{
+		this.speed = 0;
+		this.temperature = 0;
+		this.doorCondition = true;
+		this.lightCondition = true;
+		this.trainID = 0;
+	}
+
+	public float getTrackFriction()
+	{
+		return trackFriction;
+	}
+
+	public void setTrackFriction(float trackFriction)
+	{
+		this.trackFriction = trackFriction;
+	}
+
+	
+	
+	public float getAccelerationMax()
+	{
+		return accelerationMax;
+	}
+
+	public void setAccelerationMax(float accelerationMax)
+	{
+		this.accelerationMax = accelerationMax;
+	}
+	
+	public float getSpeedMax()
+	{
+		return speedLimit;
+	}
+
+	public void setSpeedMax(float speedMax)
+	{
+		this.speedLimit = speedMax;
+	}
+
+	public float getAcceleration()
+	{
+		return acceleration;
+	}
+
+	public void setAcceleration(float acceleration)
+	{
+		this.acceleration = acceleration;
+	}
+
+	public float getTotalMass()
+	{
+		return totalMass;
+	}
+
+	public void setTotalMass(float totalMass)
+	{
+		this.totalMass = totalMass;
+	}
+
+	public double getGradient()
+	{
+		return gradient;
+	}
+
+	public void setGradient(float gradient)
+	{
+		this.gradient = gradient;
+	}
+
+	public float getPowerMax()
+	{
+		return powerMax;
+	}
+
+	public void setPowerMax(float powerMax)
+	{
+		this.powerMax = powerMax;
+	}
+
+	public float getPower()
+	{
+		return power;
+	}
+
+	public void setPower(float power)
+	{
+		this.power = Math.min(power, powerMax);
+	}
+
+	public int getTrainID()
+	{
+		return trainID;
+	}
+
+	public void setTrainID(int trainID)
+	{
+		this.trainID = trainID;
+	}
+
+	public float getSpeed()
+	{
+		return speed;
+	}
+
+	public float getTemperature()
+	{
+		return temperature;
+	}
+
+	public void setTemperature(float temperature)
+	{
+		this.temperature = temperature;
+	}
+
+	public boolean isDoorCondition()
+	{
+		return doorCondition;
+	}
+
+	public void setDoorCondition(boolean doorCondition)
+	{
+		this.doorCondition = doorCondition;
+	}
+
+	public boolean isLightCondition()
+	{
+		return lightCondition;
+	}
+
+	public void setLightCondition(boolean lightCondition)
+	{
+		this.lightCondition = lightCondition;
+	}
+
+	/*
+	 * @parameters sampleTimeInterval in millseconds
+	 */
+	public void updatePhyicsState(float sampleTimeInterval)
+	{
+		float force = (float) (power / (speed/3.6 + 0.1));
+		double gg = getGradient();
+		float gradient_deceleration = (float) (gg/Math.sqrt(gg*gg + 1)* 9.8);
+		acceleration  = force/totalMass - gradient_deceleration - getTrackFriction() ;
+		acceleration = Math.min(acceleration, getAccelerationMax());
+		//System.out.println(acceleration);
+		
+		if (isBrake())
+		{
+			acceleration -= 0.5;
+		}
+		if(isEmergencyBrake())
+		{
+			acceleration -= 2.7;
+		}
+		
+		speed += acceleration * sampleTimeInterval*3.6/1000;
+
+		//speed can be bigger than 0.0
+		//smaller than speed limit
+		speed = Math.min(getSpeedMax(),Math.max(0, speed));
+	}
+
+	private float toDegrees(float radian)
+	{
+		return (float) (radian / Math.PI * 180);
+	}
+	
+	public boolean isBrake()
+	{
+		return brake;
+	}
+
+	public void setBrake(boolean brake)
+	{
+		this.brake = brake;
+	}
+
+	public boolean isEmergencyBrake()
+	{
+		return emergencyBrake;
+	}
+
+	public void setEmergencyBrake(boolean emergencyBrake)
+	{
+		this.emergencyBrake = emergencyBrake;
+	}
+	
+	public void brake()
+	{
+	}
+
+	private void emergencyBake()
+	{
+	}
+
+	public float getAuthorityFromTrack()
+	{
+		return 0;
+	}
+
+	public float getSpeedLimitFromTrack()
+	{
+		return 0;
+	}
+	
+
+	@Override
+	public String toString()
+	{
+		return "TrainModel{" + "trainID=" + trainID + ", speed=" + speed + ", speedMax=" + speedLimit + ", power=" + power + ", powerMax=" + powerMax + ", acceleration=" + acceleration + ", temperature=" + temperature + ", totalMass=" + totalMass + ", gradient=" + gradient + ", doorCondition=" + doorCondition + ", lightCondition=" + lightCondition + '}';
+	}
+
+	static public void simple_unit_test()
+	{
+		System.out.println("simplie train unit test");
+		TrainModel tr = new TrainModel(47, 100, 100, 100);
+		tr.setPower(100);
+
+		for (int ii = 0; ii < 100; ii++)
+		{
+			System.out.println("train speed " + tr.getSpeed());
+			tr.updatePhyicsState((float) 1.0);
+		}
+	}
+
+    void setTemperature(double temp) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+}
+
