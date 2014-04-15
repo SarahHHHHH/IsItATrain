@@ -9,12 +9,14 @@
  * @author yanisoukaci
  */
 package TrainSimulator;
-import java.util.*;
 public class PhantomCTCGUI extends javax.swing.JFrame {
-    TrackModel red;
+    TrackModel red, green;
     TrainController tc;
+    TC_MAINGUI wc;
     double speed = 0;
     double authority = 0;
+    public int numOfBlocks = 10;
+    
     /**
      * Creates new form PhantomCTCGUI
      */
@@ -28,6 +30,15 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
     public double getAuthority(int train_id)
     {
         return authority;
+    }
+    
+    public void setNumOfBlocks(int num){
+        //sets the number of blocks
+        this.numOfBlocks = num;
+    }
+    
+    public int getNumOfBlocks(){
+        return this.numOfBlocks;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -201,11 +212,18 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        
+        int trainStart = 0;
+        
         if(red_line_button.isSelected())
         {
             //put train on red line
             red = new TrackModel("red_line.txt", this);
-            tc = new TrainController(red, 1);
+            green = new TrackModel("red_line.txt", this);
+            //wc = new TC_MAINGUI(this, red, green);
+            wc = new TC_MAINGUI(this, red, green);
+            //System.out.println("run");
+            tc = new TrainController(red, 1, trainStart);
             
         }
         else if (green_line_button.isSelected())
@@ -222,6 +240,7 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
     private void updateGUIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateGUIActionPerformed
         // TODO add your handling code here:
         tc.executeGUI();
+        wc.trackControllerGUI.refreshBlockInfoDisplay();
     }//GEN-LAST:event_updateGUIActionPerformed
 
     private void pushAuthorityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pushAuthorityActionPerformed
@@ -239,6 +258,7 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
     public void setCurrBlock(int i)
     {
         curr_block.setText(Integer.toString(i));
+        //curr_block.setText(Integer.toString(0));
     }
     /**
      * @param args the command line arguments

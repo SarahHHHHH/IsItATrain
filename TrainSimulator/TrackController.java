@@ -6,8 +6,6 @@
  */
 package TrainSimulator;
 import javax.swing.*;
-
-import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -193,6 +191,11 @@ public class TrackController extends JFrame{
 	  return (this._SafetyTrackSpeed.getSafeSpeed(blockID));
   }
   
+  //Return the Railway Crossing associated with this Controller
+  public RailwayCrossing getRailwayCrossing(){
+      return (this._RailwayCrossing);
+  }
+  
   //Decides whether we need to drop the railway crossing bar -> Done
   public boolean dropCrossBar(int crossingBlock_ID, TrackModel theLine){
 	
@@ -358,7 +361,7 @@ public class TrackController extends JFrame{
 		  
 		  
 		return (this.passOrDeny());
+    }
 }
     
-}
   

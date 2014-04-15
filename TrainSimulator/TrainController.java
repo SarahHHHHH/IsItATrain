@@ -50,10 +50,11 @@ public class TrainController
 	
 	
 	
-	public TrainController(TrackModel line, int id)
+	public TrainController(TrackModel line, int id, int trainStart)
 	{
 		this.controllerID=id;
 		traincart=new TrainModel(line, id);
+                traincart.setBlockID(trainStart);
 		trainGUI=new TrainControllerGUI();
 		safeControl=new SafeControl(trackSpeedLimit);	
 	}

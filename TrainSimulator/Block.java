@@ -22,6 +22,8 @@ public class Block
     double blockElevation;
     double speedLimit;
     double blockSize;
+    public double speed = 0;
+    public int authority = 0;
     int blockID;
     int errorFlag = 0;
 

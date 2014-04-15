@@ -5,6 +5,7 @@
  * Purpose: This class will maintain the Maximum Speed information for a given set of blocks on a track. 
  */
 package TrainSimulator;
+
 public class SafetyTrackSpeed {
 	//Fields
 	/*

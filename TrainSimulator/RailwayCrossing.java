@@ -12,7 +12,8 @@ import java.util.ArrayList;
 public class RailwayCrossing {
 	//Fields
 	private String logicToLoad="";
-	
+	boolean crossingDropped = false;
+        
 	//Logic Objects to Handle Railway Crossing
 	private ArrayList<ValidateBooleanLogic> railwayCrossingPullDown = new ArrayList<ValidateBooleanLogic>();
 	private ArrayList<ValidateBooleanLogic> railwayCrossingPullUp = new ArrayList<ValidateBooleanLogic>();
@@ -66,10 +67,12 @@ public class RailwayCrossing {
 
 		//Redundancy Check!
 		if (val1 == val2 && val2 == val3){
-			return true;
+                    this.crossingDropped = true;
+                    return true;
 		}
 		else{
-			return false;
+                    this.crossingDropped = false;
+                    return false;
 		}
 	}
 	
@@ -84,10 +87,12 @@ public class RailwayCrossing {
 
 		//Redundancy Check!
 		if (val1 == val2 && val2 == val3){
-			return true;
+                    this.crossingDropped = false;
+                    return true;
 		}
 		else{
-			return false;
+                    this.crossingDropped = true;
+                    return false;
 		}
 	}
 

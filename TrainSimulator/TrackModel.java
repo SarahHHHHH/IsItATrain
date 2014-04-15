@@ -13,8 +13,9 @@ import java.io.*;
 import java.util.*;
 public class TrackModel
 {
-    ArrayList<Block> blocks = new ArrayList<>();
-    ArrayList<Switch> switches = new ArrayList<>();
+    ArrayList<Block> blocks = new ArrayList<Block>();
+    ArrayList<TrackController> lineControllers = new ArrayList<TrackController>();
+    ArrayList<Switch> switches = new ArrayList<Switch>();
     HashMap<TrackController,int[]> controllers = new HashMap<>();
     ArrayList<TrackController> cont_list = new ArrayList<>();
     String trackID;
@@ -41,10 +42,15 @@ public class TrackModel
                 Block b = new Block(data);
                 blocks.add(b);
             }
+            
+            this.ctc.setNumOfBlocks(this.blocks.size());
+            //Train is on the first block in the arraylist -> in yard -> block Id 0!!
+            blocks.get(0).setTrain(true);
             initializer.close();
         }
         catch(IOException e)
         {
+            e.printStackTrace();
             System.exit(1);
         }
         int counter = 1;
@@ -52,17 +58,22 @@ public class TrackModel
         //fix this shit
         for(int i = 0; i < blocks.size(); i = i + 25)
         {
-            int start_block = i + 1;
+            int start_block = i;
             int end_block = start_block + 24;
             if(i + 24 >= blocks.size())
             {
                 end_block = blocks.size();
             }
             TrackController c = new TrackController(counter, start_block, end_block, this, ctc);
+            this.lineControllers.add(c);
             int[] a = {start_block,end_block};
             controllers.put(c, a);
             cont_list.add(c);
         }
+    }
+    
+    public ArrayList<TrackController> getLineControllers(){
+        return (this.lineControllers);
     }
     
     public void trackSwitch(int id, int pos)
@@ -116,7 +127,7 @@ public class TrackModel
     
     public int getStartingBlock()
     {
-        ctc.setCurrBlock(1);
+        ctc.setCurrBlock(0);
         return 0;
     }
     public String getBeacon(int block_num, int train_id)
@@ -135,9 +146,9 @@ public class TrackModel
     public int getNextBlock(int curr, int prev)
     {
         int next = curr + 1;
-        if (next >= blocks.size() - 1)
+        if (next >= blocks.size())
         {
-            next = 1;
+            next = 0;
         }
         
         blocks.get(curr).setTrain(false);
@@ -150,24 +161,28 @@ public class TrackModel
         {
             ctc.setIsCrossBar("No");
         }
-        
-        if(blocks.get(next+1).crossingOnBlock())
-        {
-            TrackController temp = null;
-            for (TrackController c : controllers.keySet())
-            {
-                int[] block_range = controllers.get(c);
-
-                if(next >= block_range[0] && next <= block_range[1])
-                {
-                    temp = c;
-                    break;
-                }
-            }
-            ctc.setCrossBarStatus("Dropped Crossbar");
-            temp.dropCrossBar(next + 1, this);
+        if (next >= blocks.size()-1){
+            //don't check for crossing
         }
-        
+        //check if there is a crossing on the next block
+        else{
+            if(blocks.get(next+1).crossingOnBlock())
+            {
+                TrackController temp = null;
+                for (TrackController c : controllers.keySet())
+                {
+                    int[] block_range = controllers.get(c);
+
+                    if(next >= block_range[0] && next <= block_range[1])
+                    {
+                        temp = c;
+                        break;
+                    }
+                }
+                ctc.setCrossBarStatus("Dropped Crossbar");
+                temp.dropCrossBar(next + 1, this);
+            }
+        }
         if(blocks.get(curr).crossingOnBlock())
         {
             TrackController temp = null;
