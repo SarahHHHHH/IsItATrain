@@ -8,15 +8,15 @@ public class TrainControllerGUI
 	private JFrame trainFrame;
 	private JPanel trainPanel;
 	private JButton trainBrake, emergencyBrake, turnLight, turnDoor, setSpeed, setAuthority, setSpeedLimit,setTemp, setAnnoucement;
-	private JTextField currentSpeed, currentSpeedLimit, currentAcceleration, currentLight, currentDoor, currentTemp,currentID, currentAuthority,currentTrackSpeedLimit;
+	private JTextField currentSpeed, currentSpeedLimit, currentPower, currentLight, currentDoor, currentTemp,currentID, currentAuthority,currentTrackSpeedLimit;
 	private JTextField setSpeedField, setAuthorityField, setSpeedLimitField, setTempField, setAnnoucementField;
-	private JLabel currentIDLabel, currentSpeedLabel, currentSpeedLimitLabel, currentAccelerationLabel, currentLightLabel, currentDoorLabel, currentTempLabel, currentAuthorityLabel,
+	private JLabel currentIDLabel, currentSpeedLabel, currentSpeedLimitLabel, currentPowerLabel, currentLightLabel, currentDoorLabel, currentTempLabel, currentAuthorityLabel,
 	currentTrackSpeedLimitLabel, setSpeedLabel, setAuthorityLabel, setSpeedLimitLabel, errorReportLabel, setTempLabel, setAnnoucementLabel;
 	public JTextArea errorReport, annoucement;
-	public int trainID=1;
+	public int trainID;
 	private int doorStatus=0; 
 	private int lightStatus=0;
-	public double currentSpeedValue, currentSpeedLimitValue, currentAccelerationValue, currentTempValue, currentAuthorityValue;
+	public double currentSpeedValue, currentSpeedLimitValue, currentPowerValue, currentTempValue, currentAuthorityValue;
 	public String currentDoorStats="Closed";
 	public String currentLightStats="On";
 	public String annoucementString;
@@ -28,7 +28,7 @@ public class TrainControllerGUI
 	String tempStr;
 	double tempDouble;
 	int tempInteger;
-	DecimalFormat df = new DecimalFormat("#.###");
+	//DecimalFormat df = new DecimalFormat("#.###");
 	DecimalFormat authorityFormat = new DecimalFormat("#");
 
 	
@@ -76,7 +76,7 @@ public class TrainControllerGUI
 		currentIDLabel=new JLabel("Train ID");
 		currentSpeedLabel=new JLabel("Current Speed");
 		currentSpeedLimitLabel=new JLabel("Current Speed Limit");
-		currentAccelerationLabel=new JLabel("Current Acceleration");
+		currentPowerLabel=new JLabel("Current Power");
 		currentLightLabel=new JLabel("Current Light Stat");
 		currentDoorLabel=new JLabel("Current Door Stat");
 		currentTempLabel=new JLabel("Current Temperature");
@@ -91,7 +91,7 @@ public class TrainControllerGUI
 		currentID=new JTextField(trainID);
 		currentSpeed=new JTextField();
 		currentSpeedLimit=new JTextField();
-		currentAcceleration=new JTextField();
+		currentPower=new JTextField();
 		currentLight=new JTextField();
 		currentDoor=new JTextField();
 		currentTemp=new JTextField();
@@ -108,7 +108,7 @@ public class TrainControllerGUI
 		trainPanel.add(currentIDLabel);
 		trainPanel.add(currentSpeedLabel);
 		trainPanel.add(currentSpeedLimitLabel);
-		trainPanel.add(currentAccelerationLabel);
+		trainPanel.add(currentPowerLabel);
 		trainPanel.add(currentLightLabel);
 		trainPanel.add(currentDoorLabel);
 		trainPanel.add(currentTempLabel);
@@ -120,7 +120,7 @@ public class TrainControllerGUI
 		trainPanel.add(currentID);
 		trainPanel.add(currentSpeed);
 		trainPanel.add(currentSpeedLimit);
-		trainPanel.add(currentAcceleration);
+		trainPanel.add(currentPower);
 		trainPanel.add(currentLight);
 		trainPanel.add(currentDoor);
 		trainPanel.add(currentTemp);
@@ -142,8 +142,8 @@ public class TrainControllerGUI
 		currentSpeed.setBounds(100, 50, 200, 20);
 		currentSpeedLimitLabel.setBounds(100, 80, 200, 20);
         currentSpeedLimit.setBounds(100, 110, 200, 20);
-        currentAccelerationLabel.setBounds(100, 140, 200, 20);
-        currentAcceleration.setBounds(100, 170, 200, 20);
+        currentPowerLabel.setBounds(100, 140, 200, 20);
+        currentPower.setBounds(100, 170, 200, 20);
         currentLightLabel.setBounds(100, 210, 200, 20);
         currentLight.setBounds(100, 230, 200, 20);
         currentDoorLabel.setBounds(100, 260, 200, 20);
@@ -186,12 +186,12 @@ public class TrainControllerGUI
 	
 	void updateDisplay()
 	{
-		currentSpeed.setText(df.format(currentSpeedValue));
+		currentSpeed.setText(Double.toString(currentSpeedValue));
 		currentSpeedLimit.setText(Double.toString(currentSpeedLimitValue));
-		currentAcceleration.setText(df.format(currentAccelerationValue));
+		currentPower.setText(Double.toString(currentPowerValue));
 		currentLight.setText(currentLightStats);
 		currentDoor.setText(currentDoorStats);
-		currentTemp.setText(df.format(currentTempValue));
+		currentTemp.setText(Double.toString(currentTempValue));
 		currentID.setText(Integer.toString(trainID));
 		currentAuthority.setText(authorityFormat.format(currentAuthorityValue));
 		
@@ -244,6 +244,15 @@ public class TrainControllerGUI
 	int getEmergencyBrake()
 	{
 		return emergencyBrakeSignal;
+	}
+	
+	void minimalize()
+	{
+		trainFrame.setState (JFrame.ICONIFIED );
+	}
+	void normalize()
+	{
+		trainFrame.setState(JFrame.NORMAL);
 	}
 	
 	
@@ -355,6 +364,7 @@ public class TrainControllerGUI
 			}
 		}
 	}
+	
 
 	
 	/*public static void main(String[] args)
