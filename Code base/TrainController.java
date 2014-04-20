@@ -1,13 +1,26 @@
+/*File name: TrainController.java
+ * Author: Hongyao SHi
+ * Group: Team Shwoz
+ * Created Date: 4/11/2014
+ */
+
+
 package TrainSimulator;
 
 import java.text.DecimalFormat;
+
+/*This class is the main Class for the train Controller
+ * it will do all the calculation, specification and communication
+ * with the TrainControllerGUI and the TrainModel
+ */
+
 public class TrainController 
 {
 	public int controllerID;
 	
 	public double trainMass;
 	public double maxAcceleration;
-	public double maxAccelerationRightUnit;
+	public double maxAccelerationRightUnit;	//change the Acceleration units into m/s^2
 	public double maxPower;
 	
 	public double trackSpeedLimit=120;
@@ -22,21 +35,21 @@ public class TrainController
 	public int safeDoorState;
 	public int safeAuthority;
 	public double safeTemp;
-	public double safePower;
+	public double safePower, safePower1, safePower2, safePower3;
 	public double currentSpeed;
-	public double currentSpeedRightUnit;
+	public double currentSpeedRightUnit;	//Change the current speed units into m/s
 	public double currentSpeedLimit;
-	public double currentSpeedLimitRightUnit;
+	public double currentSpeedLimitRightUnit;	//Change the speed limit units into m/s
 	public double currentAuthority;
 	public double currentTemp;
 	public int currentLightStats;
 	public int currentDoorStats;
 	public double suggestedSpeed;
-	public double suggestedSpeedRightUnit;
+	public double suggestedSpeedRightUnit;		//Change the suggestedSpeed units into m/s
 	public double suggestedSpeedLimit;
 	public int suggestedAuthority;
 	public double suggestedTemp;
-	public double speedBackup, speedlimitBackup, tempBackup, authorityBackup;
+	public double speedBackup, speedlimitBackup, tempBackup, authorityBackup; //back up value for all the variables
 	public int suggestedLightStats;
 	public int suggestedDoorStats;
 	public int brakeSignal;
@@ -44,24 +57,39 @@ public class TrainController
 	public TrainModel traincart;
 	public TrainControllerGUI trainGUI;
 	public SafeControl safeControl;
-	int tempAuthority[]=new int[2];
+	int tempAuthority[]=new int[2];		//temperary spot to store authority from the trainModel
 	public int beaconValue=0;
-	DecimalFormat df = new DecimalFormat("#.###");
+	
+	double vErrorCurrent=0;				//current velocity error
+	double vErrorPrevious=0;			//velocity error from the last time step
+	double uCurrent=0;					//current potential
+	double uPrevious=0;					//potential from the previous time step
+	double timeStep=0.1;
+	public static double kp=1000;		//Proportional gain
+	public static double ki=2;			//Integral gain
+	public String[] stoppedStation;     //list of the station to stop at
+	
+	//DecimalFormat df = new DecimalFormat("#.###");
 	
 	
 	
-	public TrainController(TrackModel line, int id)
+	public TrainController(TrackModel line, int id, int trainStart)
 	{
 		this.controllerID=id;
 		traincart=new TrainModel(line, id);
+		traincart.setBlockID(trainStart);
 		trainGUI=new TrainControllerGUI();
+		trainGUI.trainID=id;
 		safeControl=new SafeControl(trackSpeedLimit);	
 	}
-
+	
+	/*This function is created so that when the clock is ticking, 
+	 * the commands in this function can be called in order
+	 */
 	void executeGUI()
 	{
 		
-		System.out.println(brakeSignal);
+	    System.out.println(brakeSignal);
            
 		currentSpeed=traincart.getSpeed();
 		maxAcceleration=traincart.getMaxAcceleration();
@@ -71,12 +99,17 @@ public class TrainController
 		currentSpeedRightUnit=0.44704*currentSpeed;
 		maxAccelerationRightUnit=0.44704*maxAcceleration;
 		suggestedSpeedRightUnit=0.44704*suggestedSpeed;
+		//the above 3 lines convert the number into international unit for calculation
 		
 		speedBackup=trainGUI.setSpeedNumber;
 		speedlimitBackup=trainGUI.setSpeedLimitNumber;
 		tempBackup=trainGUI.setTempNumber;
 		authorityBackup=trainGUI.setAuthorityNumber;
+		//the above 4 lines extract the values from the trainGUI for back up so that it will
+		//be compared to current set value to avoid repeating getting the same value and not
+		//updating
 		suggestedSpeed=traincart.getDesiredSpeed();
+		
 		if(suggestedSpeed==trackDesiredSpeed)
 		{
 			suggestedSpeed=trainGUI.getGUISpeed();
@@ -122,32 +155,43 @@ public class TrainController
 		safeDoorState=safeControl.checkDoorStatusChange(traincart.speed,suggestedDoorStats);
 		safeTemp=safeControl.checkTrainTemp(suggestedTemp);
 		safeAuthority=safeControl.checkAuthority(suggestedAuthority);
-		safePower=computerPower(suggestedSpeedRightUnit, currentSpeedRightUnit,maxPower,maxAccelerationRightUnit,trainMass,traincart.grade);
+		//The above 6 lines check the safe critic of the parameters which will be passed to trainModel
+		
+		safePower1=computerPower(suggestedSpeedRightUnit, currentSpeedRightUnit,maxPower);
+		safePower2=computerPower(suggestedSpeedRightUnit, currentSpeedRightUnit,maxPower);
+		safePower3=computerPower(suggestedSpeedRightUnit, currentSpeedRightUnit,maxPower);
+		safePower=safeControl.checkConsistency(safePower1,safePower2,safePower3);
+		//The above 4 lines calculate the power output to the trainModel 3 times and then check for 
+		//consistency to for safe critic
+		
 		putSafePower(safePower);
-		//putSafeSpeed(safeSpeed);
 		putSafeLight(safeLightState);
 		putSafeDoor(safeDoorState);
 		putSafeTemp(safeTemp);
+		//output the parameters to the trainModle Class
+		
 		if(trainGUI.setAuthorityChange==1)
 		{
 			putSafeAuthority(safeAuthority);
 		}
+		//The above 3 lines check if the authority is a new input instead 
+		//an old input to avoid keep refreshing the authority
 		putSafeSpeedLimit(safeSpeedLimit);
 		putBrake(brakeSignal);
 		putEmergencyBrake(emergencyBrakeSignal);
 		traincart.updateTrain(0.1);
 		
-		System.out.println(currentSpeed);
 		trainGUI.currentSpeedValue=currentSpeed;
 		trainGUI.currentSpeedLimitValue=traincart.speedLimit;
 		trainGUI.currentTempValue=traincart.temperature;
-		trainGUI.currentAccelerationValue=traincart.acceleration;
+		trainGUI.currentPowerValue=safePower;
 		trainGUI.currentAuthorityValue=traincart.getRemainingAuthority();
 		
 		trainGUI.setSpeedNumber=safeSpeed;
 		trainGUI.setAuthorityNumber=safeAuthority;
 		trainGUI.setSpeedLimitNumber=safeSpeedLimit;
 		trainGUI.setTempNumber=safeTemp;
+		//The above 9 lines update the values in the trainGUI class
 		
 		if(trainGUI.setAuthorityChange==1)
 		{
@@ -186,120 +230,134 @@ public class TrainController
 			if(traincart.speed==0)
 			{
 				trainGUI.currentDoorStats="open";
-				//boardPassengers();
+				//traincart.boardPassengers();
 			}
 			String temp=traincart.getBeacon();
-			if(temp.equals(null))
+			if(temp.equals("none"))
 			{
 				beaconValue=0;
 			}
 		}
-		
-		try{
-			Thread.sleep(100);
-		}
-		catch(Exception xx)
-		{}
 	}
 		
 	
-	
-	
+	/*The following function receives beacon signals from the 
+	 * train model, and based on the content of the signal, train controller
+	 * will decide whether to stop the train or not
+	 */
 	void executeBeacon()
 	{
-		String stationName="None";
+		String stationName=traincart.getBeacon();
 		if(stationName.equals("None"))
 		{}
 		else
 		{
-			trainGUI.annoucement.append("Approaching "+stationName+"\n");	
-			trainGUI.brakeSignal=1;
-			trainGUI.setSpeedNumber=0;
-			beaconValue=1;
+			for(int i=0; i<stoppedStation.length;i++)
+			{
+				if(stationName.equals(stoppedStation[i]))
+				{
+					trainGUI.annoucement.append("Approaching "+stationName+"\n");	
+					trainGUI.emergencyBrakeSignal=1;
+					trainGUI.setSpeedNumber=0;
+					beaconValue=1;
+				}
+			}
 		}
 	}
 	
+	/*the folloing function put the brake signal from the train controller
+	 * into the train model
+	 */
 	void putBrake(int brakeSignal)
 	{
 		traincart.brake=brakeSignal;
 	}
 	
+	
+	/*The following function assigns the train models emergency brake*/
 	void putEmergencyBrake(int emergencyBrakeSignal)
 	{
 		traincart.emergencyBrake=emergencyBrakeSignal;
 	}
 	
+	/*The following function assigns the train models power*/
 	void putSafePower(double inputPower)
 	{
 		traincart.setPower(inputPower);
 	}
 	
+	/*The following function assigns the train models light status*/
 	void putSafeLight(int inputLight)
 	{
 		traincart.setDoorStatus(inputLight);
 	}
 	
+	/*The following function assigns the train models door status*/
 	void putSafeDoor(int inputDoor)
 	{
 		traincart.setDoorStatus(inputDoor);
 	}
 	
+	/*The following function assigns the train models temperature*/
 	void putSafeTemp(double inputTemp)
 	{
 		traincart.setTemperature(inputTemp);
 	}
 	
+	/*The following function assigns the train models speedlimit*/
 	void putSafeSpeedLimit(double inputSpeedLimit)
 	{
 		traincart.speedLimit=inputSpeedLimit;
 	}
 	
+	/*The following function assigns the train models authority*/
 	void putSafeAuthority(double inputAuthority)
 	{
-		traincart.authority=inputAuthority;
+		traincart.remainingAuthority=inputAuthority;
 	}
 	
-	
-	double computerPower(double suggestedSpeed, double currentSpeed, double maxPower, double maxAcceleration, double trainMass, double grade)
+	/*The following function computes the output power using the stored velocity error and the u*/
+	double computerPower(double suggestedSpeed, double currentSpeed, double maxPower)
 	{
-		double tempSpeed=1;
-		if(currentSpeed<=0)
-			tempSpeed=1;
+		vErrorCurrent=suggestedSpeed-currentSpeed;
+		uCurrent=uPrevious+(timeStep/2)*(vErrorCurrent+vErrorPrevious);
+		double outputPower=kp*vErrorCurrent+ki*uCurrent;
+		if(outputPower<maxPower)
+		{
+			uCurrent=uPrevious+(timeStep/2)*(vErrorCurrent+vErrorPrevious);
+		}
 		else
-			tempSpeed=currentSpeed;
-		double tempPower_tractive1=tractiveCalculation(tempSpeed, trainMass, maxAcceleration, grade);
-		double tempPower_tractive2=tractiveCalculation(tempSpeed, trainMass, maxAcceleration, grade);
-		double tempPower_tractive3=tractiveCalculation(tempSpeed, trainMass, maxAcceleration, grade);
-		double tempPower_tractive=safeControl.checkConsistency(tempPower_tractive1,tempPower_tractive2,tempPower_tractive3);
-		double tempPower_newton1=newtonCalculation(tempSpeed, trainMass, maxAcceleration);
-		double tempPower_newton2=newtonCalculation(tempSpeed, trainMass, maxAcceleration);
-		double tempPower_newton3=newtonCalculation(tempSpeed, trainMass, maxAcceleration);
-		double tempPower_newton=safeControl.checkConsistency(tempPower_newton1,tempPower_newton2,tempPower_newton3);
-		double tempPower=safeControl.findMin(tempPower_tractive, tempPower_newton);
-		if(tempPower>maxPower)
 		{
-			tempPower=maxPower;
+			uCurrent=uPrevious;
 		}
-		if(currentSpeed>=suggestedSpeed|| brakeSignal==1 || emergencyBrakeSignal==1)
+		vErrorPrevious=vErrorCurrent;
+		uPrevious=uCurrent;
+		if(traincart.brake==1||traincart.emergencyBrake==1||suggestedSpeed<currentSpeed)
 		{
-			tempPower=0;
+			outputPower=0;
 		}
-		//System.out.println(tempPower);
-		return tempPower;
+		return outputPower;
 	}
 	
-	double tractiveCalculation(double tempSpeed, double trainMass, double acceleration, double grade)
+	/*The following function minimizes the current GUI*/
+	void minimalize()
 	{
-		double power=(0.35*trainMass/1000+100*grade)*tempSpeed;
-		return power;
+		this.trainGUI.minimalize();
 	}
 	
-	double newtonCalculation(double tempSpeed, double trainMass, double acceleration)
+	/*The following function normalize the GUI*/
+	void normalize()
 	{
-		double power=trainMass*tempSpeed*acceleration;
-		return power;
+		this.trainGUI.normalize();
 	}
 	
+	/*The following function gather the station list name so that it can stopped at the assginment stations*/
+	void setStationList(String[] stationList)
+	{
+		this.stoppedStation=stationList; 
+	}
+	
+	/*The test main function for the sub module*/
 	/*public static void main(String[] args)
 	{
 		int lineColor=1;
