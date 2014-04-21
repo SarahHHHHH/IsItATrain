@@ -15,8 +15,8 @@ import java.text.DecimalFormat;
  */
 
 public class TrainController 
-{
-	public int controllerID;
+{   
+        public int controllerID;
 	
 	public double trainMass;
 	public double maxAcceleration;
@@ -66,7 +66,7 @@ public class TrainController
 	double uPrevious=0;					//potential from the previous time step
 	double timeStep=0.1;
 	public static double kp=1000;		//Proportional gain
-	public static double ki=2;			//Integral gain
+	public static double ki=20;			//Integral gain
 	public String[] stoppedStation;     //list of the station to stop at
 	
 	//DecimalFormat df = new DecimalFormat("#.###");
@@ -89,16 +89,16 @@ public class TrainController
 	void executeGUI()
 	{
 		
-	    System.out.println(brakeSignal);
            
 		currentSpeed=traincart.getSpeed();
 		maxAcceleration=traincart.getMaxAcceleration();
 		maxPower=traincart.getMaxPower();
 		trainMass=traincart.getTotalMass();
+		currentAuthority=traincart.getRemainingAuthority();
 		
-		currentSpeedRightUnit=0.44704*currentSpeed;
-		maxAccelerationRightUnit=0.44704*maxAcceleration;
-		suggestedSpeedRightUnit=0.44704*suggestedSpeed;
+		currentSpeedRightUnit=2.23694*currentSpeed;
+		maxAccelerationRightUnit=2.23694*maxAcceleration;
+		suggestedSpeedRightUnit=2.23694*suggestedSpeed;
 		//the above 3 lines convert the number into international unit for calculation
 		
 		speedBackup=trainGUI.setSpeedNumber;
@@ -109,6 +109,11 @@ public class TrainController
 		//be compared to current set value to avoid repeating getting the same value and not
 		//updating
 		suggestedSpeed=traincart.getDesiredSpeed();
+		
+		if(currentAuthority==0)
+		{
+			trainGUI.emergencyBrakeSignal=1;
+		}
 		
 		if(suggestedSpeed==trackDesiredSpeed)
 		{
@@ -148,6 +153,8 @@ public class TrainController
 		suggestedDoorStats=trainGUI.getGUIDoorSwitch();
 		brakeSignal=trainGUI.getBrake();
 		emergencyBrakeSignal=trainGUI.getEmergencyBrake();
+	
+		
 		
 		safeSpeed=safeControl.checkTrainSpeed(suggestedSpeed,suggestedSpeedLimit);
 		safeSpeedLimit=safeControl.checkTrainSpeedLimit(suggestedSpeedLimit);
@@ -161,6 +168,7 @@ public class TrainController
 		safePower2=computerPower(suggestedSpeedRightUnit, currentSpeedRightUnit,maxPower);
 		safePower3=computerPower(suggestedSpeedRightUnit, currentSpeedRightUnit,maxPower);
 		safePower=safeControl.checkConsistency(safePower1,safePower2,safePower3);
+		updatePowerStep();
 		//The above 4 lines calculate the power output to the trainModel 3 times and then check for 
 		//consistency to for safe critic
 		
@@ -223,7 +231,7 @@ public class TrainController
 		}
 		if(beaconValue==0)
 		{
-			executeBeacon();
+			//executeBeacon();
 		}
 		else
 		{
@@ -330,13 +338,17 @@ public class TrainController
 		{
 			uCurrent=uPrevious;
 		}
-		vErrorPrevious=vErrorCurrent;
-		uPrevious=uCurrent;
 		if(traincart.brake==1||traincart.emergencyBrake==1||suggestedSpeed<currentSpeed)
 		{
 			outputPower=0;
 		}
 		return outputPower;
+	}
+	
+	void updatePowerStep()
+	{
+		vErrorPrevious=vErrorCurrent;
+		uPrevious=uCurrent;
 	}
 	
 	/*The following function minimizes the current GUI*/
@@ -355,12 +367,19 @@ public class TrainController
 	void setStationList(String[] stationList)
 	{
 		this.stoppedStation=stationList; 
-	}
+        }
 	
+        public String toString()
+        {
+            return("Train " + Integer.toString(traincart.id));
+        }
 	/*The test main function for the sub module*/
 	/*public static void main(String[] args)
 	{
 		int lineColor=1;
 		new TrainControl(lineColor,controllerID);
-	}*/	
+	}*/
+        
+        //public double dt = traincart.getDt();
+       
 }
