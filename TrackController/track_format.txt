@@ -1,0 +1,9 @@
+block number
+block length
+block grade
+speed limit
+elevation
+station
+underground
+crossing
+switch number
