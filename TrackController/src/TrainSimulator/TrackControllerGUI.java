@@ -5,15 +5,10 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import javax.swing.*;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- *
- * @author dward330
+ * This class will implement the GUI form of the Track Controller 
+ * 
+ * @author Derrick Ward
  */
 public class TrackControllerGUI extends javax.swing.JFrame {
     PhantomCTCGUI ctc;
@@ -22,7 +17,7 @@ public class TrackControllerGUI extends javax.swing.JFrame {
     TrackModel redLine, greenLine;
     
     /**
-     * Creates new form TrackControllerForm
+     * Creates a new form TrackControllerForm
      */
     public TrackControllerGUI(PhantomCTCGUI ctc, TrackModel redLine, TrackModel greenLine) {
         /*Set the CTC*/
@@ -666,7 +661,10 @@ public class TrackControllerGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+    /** 
+    * This changes a switch position to Open, as long as the system verifies it 
+    * can. 
+    */    
     private void openSRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openSRadioActionPerformed
         /* Perform the switch change to open if possible */
         
@@ -695,6 +693,9 @@ public class TrackControllerGUI extends javax.swing.JFrame {
         this.refreshBlockInfoDisplay();
     }//GEN-LAST:event_openSRadioActionPerformed
 
+    /** 
+    * This method pushes an authority to a block.
+    */       
     private void authorityButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authorityButtActionPerformed
         // Push the Authority stored in the GUI to the block
         int authority;
@@ -719,6 +720,9 @@ public class TrackControllerGUI extends javax.swing.JFrame {
         this.refreshBlockInfoDisplay();
     }//GEN-LAST:event_authorityButtActionPerformed
 
+    /** 
+    * This method pushes a speed to a block.
+    */       
     private void speedButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_speedButtActionPerformed
         // Push the Speed stored in the GUI to the block
         double speed;
@@ -748,6 +752,10 @@ public class TrackControllerGUI extends javax.swing.JFrame {
         this.refreshBlockInfoDisplay();
     }//GEN-LAST:event_speedButtActionPerformed
 
+    /** 
+    * This method changes a switch position to close, as long as the system verifies
+    * that it can.
+    */       
     private void closeSRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeSRadioActionPerformed
         /* Perform the switch change to open if possible */
         
@@ -771,6 +779,11 @@ public class TrackControllerGUI extends javax.swing.JFrame {
         this.refreshBlockInfoDisplay();
     }//GEN-LAST:event_closeSRadioActionPerformed
 
+    
+    /** 
+    * This method drops the railway crossing, as long as the system verifies that
+    * this is the right time to do that. 
+    */       
     private void dropRailRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dropRailRadioActionPerformed
         /* Drop the Railway Crossing if possible */
         
@@ -796,6 +809,11 @@ public class TrackControllerGUI extends javax.swing.JFrame {
         this.refreshBlockInfoDisplay();
     }//GEN-LAST:event_dropRailRadioActionPerformed
 
+  
+    /** 
+    * This method raises the railway crossing, as long as the system verifies that
+    * this is the right time to do that. 
+    */  
     private void raiseRailRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_raiseRailRadioActionPerformed
         /* Raise the Railway Crossing if possible */
         
@@ -821,6 +839,11 @@ public class TrackControllerGUI extends javax.swing.JFrame {
         this.refreshBlockInfoDisplay();
     }//GEN-LAST:event_raiseRailRadioActionPerformed
 
+    
+    /** 
+    * This method decides whether it is time to display the block information
+    * panel or not.
+    */      
     private void trackComboSelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trackComboSelActionPerformed
         //Get the Item Selected
         int item = this.trackComboSel.getSelectedIndex();
@@ -848,6 +871,10 @@ public class TrackControllerGUI extends javax.swing.JFrame {
         System.out.println("track select changed");
     }//GEN-LAST:event_trackComboSelActionPerformed
 
+    /** 
+    * This method decides whether it is time to display the block information
+    * panel or not.
+    */ 
     private void blockComboSelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blockComboSelActionPerformed
         //Get the Item Selected
         int item = this.blockComboSel.getSelectedIndex();
@@ -949,52 +976,91 @@ public class TrackControllerGUI extends javax.swing.JFrame {
     private javax.swing.JLabel wcMonitorVal;
     // End of variables declaration//GEN-END:variables
 
+    
+    /** 
+    * This method hides the block control and block information panels.
+    */ 
     public void runInterfaceDefaults() {
         /*Disable the Block Info Panel and the Block Control Panel*/
         this.hideBlockControl();
         this.hideBlockInfo();   
     }
-    
+  
+
+    /** 
+    * This method hides the block control panel.
+    */     
     private void hideBlockControl(){
         this.blockControlPanel.setVisible(false);
     }
     
+    
+    /** 
+    * This method hides the block information panel.
+    */     
     private void hideBlockInfo(){
         this.blockInfoPanel.setVisible(false);
     }
     
+    
+    /** 
+    * This method shows the block control panel.
+    */    
     private void showBlockControl(){
         this.blockControlPanel.setVisible(true);
     }
     
+    /** 
+    * This method shows the block information panel.
+    */    
     private void showBlockInfo(){
         this.blockInfoPanel.setVisible(true);
     }
+  
     
+    /** 
+    * This method hides the switch state controls.
+    */     
     private void hideControlSwitchState(){
         this.controlSwitchLabel.setVisible(false);
         this.openSRadio.setVisible(false);
         this.closeSRadio.setVisible(false);
     }
+ 
     
+    /** 
+    * This method shows the switch state controls.
+    */     
     private void showControlSwitchState(){
         this.controlSwitchLabel.setVisible(true);
         this.openSRadio.setVisible(true);
         this.closeSRadio.setVisible(true);
     }
+ 
     
+    /** 
+    * This method hides the Railway Crossing bar state controls.
+    */     
     private void hideControlRailwayState(){
         this.controlRailwayLabel.setVisible(false);
         this.dropRailRadio.setVisible(false);
         this.raiseRailRadio.setVisible(false);
     }
+
     
+    /** 
+    * This method shows the Railway Crossing bar state controls.
+    */   
     private void showControlRailwayState(){
         this.controlRailwayLabel.setVisible(true);
         this.dropRailRadio.setVisible(true);
         this.raiseRailRadio.setVisible(true);
     }
 
+  
+    /** 
+    * This method populates the combo boxes for tracks and blocks.
+    */   
     private void populateData() {
         
         /*Temporary*/
@@ -1017,6 +1083,14 @@ public class TrackControllerGUI extends javax.swing.JFrame {
         this.blockComboSel.setSelectedIndex(0);
     }
     
+    
+    /** 
+    * This method gets the track controller that monitors the selected block.
+    * 
+    * @param listOfControllers The list of track controllers for a given track line
+    * @param block_ID The ID of the block
+    * @return The Track Controller monitoring the selected block (from GUI)
+    */      
     private TrackController getTrackControllerForBlock(ArrayList<TrackController> listOfControllers ,int block_ID){
         TrackController temp = null;
         
@@ -1038,6 +1112,11 @@ public class TrackControllerGUI extends javax.swing.JFrame {
         return (temp);
     }
     
+    
+    /** 
+    * This method refreshes all components in the Block Control and Information 
+    * Panels.
+    */       
     public void refreshBlockInfoDisplay(){
         //Get the Item Selected
         int item = (this.blockComboSel.getSelectedIndex()-1);

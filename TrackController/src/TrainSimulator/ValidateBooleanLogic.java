@@ -14,21 +14,45 @@ import java.util.Stack;
 
 
 @SuppressWarnings("unused")
+/**
+ * This class will maintain the Track and Train information for a Train on a 
+ * given set of blocks, on a track. 
+ * 
+ * @author Derrick Ward
+ */
 public class ValidateBooleanLogic {
 	//Fields logic
 	private String logic="";
 	
-	//Constructor: loads the logic into this PLC Program -> Done
+	
+        /**
+        * This Constructor creates a ValidateBooleanLogc Object (PLC Program) 
+        * and loads the logic into the this PLC Program.
+        * 
+        * @param logicToLoad The Logic this PLC Program will follow
+        */
 	public ValidateBooleanLogic(String logicToLoad){
 		this.loadLogic(logicToLoad);
 	}
 	
-	//Loads the Logic into this PLC Program -> Done
+	
+        /**
+        * This method loads the logic this PLC Program will follow
+        * 
+        * @param logicToLoad The Logic this PLC Program will follow
+        */
 	private void loadLogic(String logicToLoad){
 		this.logic = logicToLoad;
 	}
 	
-	//Evaluates PLC  Program based off logic points -> Done
+	
+        /**
+        * This method evaluates the logic points along the track and returns a
+        * boolean value.
+        * 
+        * @param logicPoints The existence of a train at different locations
+        * along the track
+        */
 	public boolean evaluateLogic(ArrayList<String> logicPoints){
 		int lpLength = logicPoints.size();
 		int logicLength = this.logic.length();

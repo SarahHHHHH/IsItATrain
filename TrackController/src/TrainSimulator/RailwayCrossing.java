@@ -9,6 +9,14 @@
 package TrainSimulator;
 import java.util.ArrayList;
 
+
+/**
+ * This class will detect maintain information about which trains are at the Railway Crossing;
+ * This object is instantiated with each Track Controller; If the controller is not monitoring
+ * a railway crossing, this object will have info implicating so.
+ * 
+ * @author Derrick Ward
+ */
 public class RailwayCrossing {
 	//Fields
 	private String logicToLoad="";
@@ -18,7 +26,13 @@ public class RailwayCrossing {
 	private ArrayList<ValidateBooleanLogic> railwayCrossingPullDown = new ArrayList<ValidateBooleanLogic>();
 	private ArrayList<ValidateBooleanLogic> railwayCrossingPullUp = new ArrayList<ValidateBooleanLogic>();
 	
-	//Constructor -> Done
+	
+        /**
+        * This Constructor creates a RailwayCrossing Object) and stores the
+        * Track Line this Railway Crossing is on
+        * 
+        * @param theLine The Track Line this Railway Crossing is on
+        */
 	public RailwayCrossing(TrackModel theLine){
 		
 	/*Create the logicTable for the the "ValidateBooleanLogic" Class:
@@ -56,7 +70,13 @@ public class RailwayCrossing {
 			this.railwayCrossingPullUp.add(new ValidateBooleanLogic(this.logicToLoad));
 	}
 	
-	//Decides whether we drop the railway crossing bar or not -> Done
+	
+        /**
+        * This decides whether we drop the railway crossing bar or not
+        * 
+        * @param logicPoints The existence of a train at different locations
+        * along the track
+        */
 	public boolean doWeDropCrossing(ArrayList<String> logicPoints){
 		boolean val1, val2, val3;
 		
@@ -76,7 +96,13 @@ public class RailwayCrossing {
 		}
 	}
 	
-	//Decides whether we raise the railway crossing bar or not -> Done
+	
+        /**
+        * This decides whether we raise the railway crossing bar or not
+        * 
+        * @param logicPoints The existence of a train at different locations
+        * along the track
+        */
 	public boolean doWeRaiseCrossing(ArrayList<String> logicPoints){
 		boolean val1, val2, val3;
 		

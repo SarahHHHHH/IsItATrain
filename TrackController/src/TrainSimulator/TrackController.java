@@ -11,7 +11,6 @@ import java.util.HashMap;
 
 
 /**
- * <p>
  * This class will implement a track controller for a given set of blocks on a track. 
  * 
  * @author Derrick Ward
@@ -53,7 +52,7 @@ public class TrackController extends JFrame{
   
   
  /**
- * Creates a TrackController object that can modify the Switches, 
+ * This Constructor creates a TrackController object that can modify the Switches, 
  * Crossing Lights, and Railway Crossings of a track. 
  * 
  * <p>
@@ -126,13 +125,11 @@ public class TrackController extends JFrame{
   }
   
   
- /**
- * Returns a TrackStatus Object. 
+ /** 
+ * This method returns this Controller's TrackStatus Object. 
  * 
- * <p>
- * This method returns this Controller's  TrackStatus Object. This is object
- * allows the CTC to get the track status for this track controller
- *
+ * This is object allows the CTC to get the track status for this 
+ * track controller.
  * @return Returns a this Controller's Track Status Object
  */
   public TrackStatus getTrackStatus(){
@@ -141,7 +138,6 @@ public class TrackController extends JFrame{
   
   
 /** 
- * <p>
  * This method sets the identity of this WaySide Controller Object
  * 
  * @param  identity  A number Identifying this Wayside Controller Object
@@ -152,8 +148,8 @@ public class TrackController extends JFrame{
   
   
  /** 
- * <p>
  * This method return the identity of this WaySide Controller Object
+ * 
  * @return  A number Identifying this Wayside Controller Object
  */
   public int getTrackControllerIdentifier(){
@@ -162,7 +158,6 @@ public class TrackController extends JFrame{
   
   
 /** 
- * <p>
  * This method returns the desired Train Speed from CTC
  * 
  * @param trainID The Id of the Train
@@ -198,7 +193,6 @@ public class TrackController extends JFrame{
   }
   
 /** 
- * <p>
  * This method returns the desired Train Authority from CTC
  * 
  * @param trainID The Id of the Train
@@ -219,7 +213,6 @@ public class TrackController extends JFrame{
   }
   
 /** 
- * <p>
  * This method return the Speed Limit for a Block
  * 
  * @param blockID The Id of the Block
@@ -231,7 +224,6 @@ public class TrackController extends JFrame{
   }
   
 /** 
- * <p>
  * This method return the Railway Crossing associated with this Controller
  * 
  * @return The Controller Associated with this Controller
@@ -241,7 +233,6 @@ public class TrackController extends JFrame{
   }
   
 /** 
- * <p>
  * This method decides whether we need to drop the Railway Crossing Bar.
  * 
  * @param crossingBlock_ID The Id of the Block the Crossing is located on
@@ -263,7 +254,6 @@ public class TrackController extends JFrame{
   }
   
  /** 
- * <p>
  * This method decides whether we need to raise the Railway Crossing Bar.
  * 
  * @param crossingBlock_ID The Id of the Block the Crossing is located on
@@ -285,7 +275,6 @@ public class TrackController extends JFrame{
   }
   
  /** 
- * <p>
  * This method decides whether we can perform a Track Switch Change and 
  * implements it if we can.
  * 
@@ -384,7 +373,6 @@ public class TrackController extends JFrame{
   }
   
  /** 
- * <p>
  * This method returns whether the CTC Command was Acknowledged.
  * 
  * @return  Whether the CTC Command was Acknowledged
@@ -396,7 +384,6 @@ public class TrackController extends JFrame{
   
 
  /** 
- * <p>
  * This method performs the redundancy check for Track Switch Changes.
  * 
  * @param theline the Line this Controller and the Crossing is on
@@ -449,7 +436,6 @@ public class TrackController extends JFrame{
     }
     
  /** 
- * <p>
  * This method returns the period of the clock signal the system is running on.
  * 
  * @return  The period of the clock signal the system is running on

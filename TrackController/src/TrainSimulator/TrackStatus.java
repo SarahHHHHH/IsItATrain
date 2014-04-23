@@ -9,6 +9,13 @@ package TrainSimulator;
 
 import java.util.ArrayList;
 
+
+/**
+ * This class will maintain the Track information for a Train on a 
+ *          given set of blocks, on a track. 
+ * 
+ * @author Derrick Ward
+ */
 public class TrackStatus {
 	//Fields
 	private int blockStart, blockEnd;
@@ -17,14 +24,26 @@ public class TrackStatus {
         private ArrayList<Integer> brokenRailLocations = new ArrayList<Integer>();
 	private ArrayList<Integer> badTrackCircuitLocations = new ArrayList<Integer>();
         
-	//Constructor
+	/**
+        * This Constructor creates a TrackStatus Object 
+        * 
+        * @param theLine The Track Line this controller is on
+        * @param blockStart The first block this Track Controller monitors
+        * @param blockEnd The last block this Track Controller monitors
+        */
 	public TrackStatus(TrackModel theLine, int blockStart, int blockEnd){
 		this.blockStart = blockStart;
 		this.blockEnd = blockEnd;
 		this.theLine = theLine;
 	}
 	
-	//Track Model tells Wayside it detects a broken Rail, and where 
+	
+        /** 
+        * This method is called by Track Model: To tell Wayside it detects a 
+        * broken Rail, and where.
+        * 
+        * @param blockLocation The ID of the Block
+        */ 
 	public void brokenRailsDetected(int blockLocation){
             //Check if this location is already known to be broken
             if (this.brokenRailLocations.contains(new Integer(blockLocation))){
@@ -37,12 +56,23 @@ public class TrackStatus {
             }
 	}
         
-        //Return the list of Broken Rail Locations
+        
+        /** 
+        * This method returns an ArrayList of Broken Rail Locations
+        * 
+        * @return An ArrayList of Broken Rail Locations 
+        */ 
 	public ArrayList<Integer> brokenRailsDetected(){
             return (this.brokenRailLocations);
 	}
         
-        //Track Model tells Wayside if a broken rail was fixed and where 
+        
+        /** 
+        * This method is called by Track Model: To tell Wayside if a broken rail 
+        * was fixed and where
+        * 
+        * @param blockLocation The ID of the block 
+        */ 
 	public void fixedBrokenRailHere(int blockLocation){
             //Check if this location is already known to be broken
             if (this.brokenRailLocations.contains(new Integer(blockLocation))){
@@ -55,7 +85,13 @@ public class TrackStatus {
             }
 	}
         
-	//Track Model tells Wayside it detects a Bad Track Circuit, and where 
+
+        /** 
+        * This method is called by Track Model: To tell Wayside it detects a 
+        * Bad Track Circuit, and where
+        * 
+        * @param blockLocation The ID of the block 
+        */
 	public void badTrackCircuitDetected(int blockLocation){
             //Check if this location is already known to be bad
             if (this.badTrackCircuitLocations.contains(new Integer(blockLocation))){
@@ -68,12 +104,23 @@ public class TrackStatus {
             }
 	}
         
-        //Return the list of Bad Track Circuit Locations
+        //Return the list of 
+        /** 
+        * This method returns an ArrayList of Bad Track Circuit Locations
+        * 
+        * @return An ArrayList of Broken Rail Locations 
+        */
 	public ArrayList<Integer> badTrackCircuitLocations(){
             return (this.badTrackCircuitLocations);
 	}
         
-        //Track Model tells Wayside if a Bad Track Circuit was fixed and where 
+        
+        /** 
+        * This method is called by Track Model: To tell Wayside if a Bad Track
+        * Circuit was fixed and where
+        * 
+        * @param blockLocation The ID of the block 
+        */
 	public void fixedBadTrackCircuitHere(int blockLocation){
             //Check if this location is already known to be bad
             if (this.badTrackCircuitLocations.contains(new Integer(blockLocation))){
@@ -86,44 +133,84 @@ public class TrackStatus {
             }
 	}
 	
-	//Track Model tells Track Controller there is a power failure 
+
+        /** 
+        * This method is called by Track Model: To tell Track Controller there
+        * is a power failure
+        */
 	public void trackPowerFailureDetected(){
 		//Store that this track has a power failure
                 this.powerFailure = true;
 	}
         
-        //CTC Asks if there is a power failure
+
+        /** 
+        * This method is called by CTC: To see if there is a power failure
+        * 
+        * @return boolean value of whether there is a power failure or not
+        */
         public boolean trackPowerFailure(){
             return (this.powerFailure);
         }
         
-        //Track Model tells Track Controller the Power has been Restored 
+        
+        /** 
+        * This method is called by Track Model: To tell Track Controller the 
+        * Power has been Restored
+        */
 	public void trackPowerFailureRestored(){
 		//Store that this track's power has been restored
                 this.powerFailure = false;
 	}
 	
-	//Ask the track for the block id the train is on and return it 
+	/** 
+        * This method return the block ID the train is on
+        * 
+        * @return Block ID the train is on
+        */ 
 	public int getTrainBlockID(){
 		return (this.theLine.getTrainBlockID());
 	}
         
-        //Ask the train for the train id on this block
+        
+        /** 
+        * This method return the Train ID, if a train is on the block
+        * 
+        * @param blockItem the ID of the Block
+        * @return Train ID
+        */
 	public int getTrainID(int blockItem){
          return (this.theLine.getTrainID(blockItem));   
         }
         
-	//Return the first block this Track Controller is monitoring
+	 
+        /** 
+        * This method returns the first block this Track Controller is
+        * monitoring
+        * 
+        * @return The first Block ID this Track Controller is monitoring
+        */
 	public int getBlockStart(){
 		return (this.blockStart);
 	}
 	
-	//Return the last block this Track Controller is monitoring
+	
+        /** 
+        * This method returns the last block this Track Controller is
+        * monitoring
+        * 
+        * @return The last Block ID this Track Controller is monitoring
+        */
 	public int getBlockEnd(){
 		return (this.blockEnd);
 	}
 	
-	//Return the Track Line this Track Controller is on
+	
+        /** 
+        * This method returns the Track Line this Track Controller is on
+        * 
+        * @return The Track Line this Track Controller is on
+        */
 	public TrackModel getTrackLine(){
 		return (this.theLine);
 	}
