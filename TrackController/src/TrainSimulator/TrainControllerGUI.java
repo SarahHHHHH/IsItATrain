@@ -1,7 +1,20 @@
+/*File name: TrainControllerGUI.java
+ * Author: Hongyao Shi
+ * Group: Team Shwoz
+ * Created Date: 4/11/2014
+ */
+
 package TrainSimulator;
 import java.awt.event.*;
 import javax.swing.*;
 import java.text.DecimalFormat;
+
+/*This class the GUI for the train controller
+ */
+
+/**
+* @author Hongyao Shi
+*/
 
 public class TrainControllerGUI 
 {
@@ -34,7 +47,8 @@ public class TrainControllerGUI
 	
 	public TrainControllerGUI()
 	{
-		trainFrame=new JFrame("Prototype GUI");
+		//Set up the GUI and all the parameters positions
+		trainFrame=new JFrame("Train Controller GUI");
 		trainPanel=new JPanel();
 		trainPanel.setLayout(null);
 		TrainControllerGUI.ButtonListener bListener = new TrainControllerGUI.ButtonListener();
@@ -184,6 +198,12 @@ public class TrainControllerGUI
         trainFrame.setSize(900, 900);
 	}
 	
+	/**
+	 *The following function updates the current parameter shown on the GUI
+	 *by changing the corresponding parameters into Strings
+	 *
+	 */
+	
 	void updateDisplay()
 	{
 		currentSpeed.setText(Double.toString(currentSpeedValue));
@@ -197,6 +217,12 @@ public class TrainControllerGUI
 		
 	}
 	
+	/**
+	 *The following function updates the setting parameter shown on the GUI
+	 *by changing the corresponding parameters into Strings
+	 *
+	 */
+	
 	void updateSetDisplay()
 	{
 		setSpeedField.setText(Double.toString(setSpeedNumber));
@@ -205,15 +231,33 @@ public class TrainControllerGUI
 		setTempField.setText(Double.toString(setTempNumber));	
 	}
 	
+	/**
+	 *The following function returns the light status set in GUI
+	 *
+	 *@return the set light status
+	 */
+	
 	int getGUILightSwitch()
 	{
 		return lightStatus;
 	}
 	
+	/**
+	 *The following function returns the door status set in GUI
+	 *
+	 *@return the set door status
+	 */
+	
 	int getGUIDoorSwitch()
 	{
 		return doorStatus;
 	}
+	
+	/**
+	 *The following function returns the Authority set in GUI
+	 *
+	 *@return the set authority
+	 */
 	
 	int[] getGUIAuthority()
 	{
@@ -221,20 +265,44 @@ public class TrainControllerGUI
 		return returnValue;
 	}
 	
+	/**
+	 *The following function returns desired speed
+	 *
+	 *@return the set desired speed
+	 */
+	
 	double getGUISpeed()
 	{
 		return setSpeedNumber;
 	}
+	
+	/**
+	 *The following function returns desired speed limit
+	 *
+	 *@return the set desired speed limit
+	 */
 	
 	double getGUISpeedLimit()
 	{
 		return setSpeedLimitNumber;
 	}
 	
+	/**
+	 *The following function returns desired temprature
+	 *
+	 *@return the set desired temprature
+	 */
+	
 	double getGUITemp()
 	{
 		return setTempNumber;
 	}
+	
+	/**
+	 *The following function returns brakeSignal
+	 *
+	 *@return the set desired brake Signal
+	 */
 	
 	int getBrake()
 	{
@@ -246,10 +314,19 @@ public class TrainControllerGUI
 		return emergencyBrakeSignal;
 	}
 	
+	/**
+	 *The following function minimilize the current GUI
+	 */
+	
 	void minimalize()
 	{
 		trainFrame.setState (JFrame.ICONIFIED );
 	}
+	
+	/**
+	 *The following function normalize the current GUI
+	 */
+	
 	void normalize()
 	{
 		trainFrame.setState(JFrame.NORMAL);

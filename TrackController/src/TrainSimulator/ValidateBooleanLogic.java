@@ -52,6 +52,8 @@ public class ValidateBooleanLogic {
         * 
         * @param logicPoints The existence of a train at different locations
         * along the track
+        * @return Whether Logic Points along with Logic Language evaluate to true
+        * or false
         */
 	public boolean evaluateLogic(ArrayList<String> logicPoints){
 		int lpLength = logicPoints.size();

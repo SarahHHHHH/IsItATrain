@@ -18,6 +18,7 @@ public class TrackModel
     ArrayList<Switch> switches = new ArrayList<Switch>();
     HashMap<TrackController,int[]> controllers = new HashMap<>();
     ArrayList<TrackController> cont_list = new ArrayList<>();
+    HashMap<String, Integer> stationList = new HashMap<>();
     HashMap<Integer, Integer> trains = new HashMap<>();
     String trackID;
     String block_line;
@@ -37,6 +38,11 @@ public class TrackModel
                 block_line = initializer.readLine();
                 Block b = new Block(block_line);
                 blocks.add(b);
+                
+                if(b.stationOnBlock())
+                {
+                    stationList.put(b.setBeacon(), b.getBlockID());
+                }
             }
             initializer.close();
             
@@ -46,7 +52,14 @@ public class TrackModel
                 Block b = blocks.get(i); //get the current block
                 if(b.switchOnBlock()) //does current block have a switch
                 {
-                    s = new Switch(b.switch_id, i, i+1);
+                    if(blocks.get(i - 1).switch_id != -1)
+                    {
+                        s = new Switch(b.switch_id, i, i + 1);
+                    }
+                    else
+                    {
+                        s = new Switch(b.switch_id, i, i - 1);
+                    }
                     
                     //go through all the blocks again
                     for(int j = 0; j < blocks.size(); j++)
@@ -66,8 +79,6 @@ public class TrackModel
                 
             }
             
-            
-            this.ctc.setNumOfBlocks(this.blocks.size());
             //Train is on the first block in the arraylist -> in yard -> block Id 0!!
             blocks.get(0).setTrain(true);
         }
@@ -114,6 +125,10 @@ public class TrackModel
         return (this.lineControllers);
     }
     
+    public int getTrackSize()
+    {
+        return blocks.size();
+    }
     public void trackSwitch(int id, int oc)
     {
         //1 for open, 0 for close
@@ -170,7 +185,6 @@ public class TrackModel
     }
     public int getStartingBlock()
     {
-        ctc.setCurrBlock(0);
         return 0;
     }
     public String getBeacon(int block_num)
@@ -206,14 +220,7 @@ public class TrackModel
         
         blocks.get(curr).setTrain(false);
         blocks.get(next).setTrain(true);
-        if(blocks.get(next).crossingOnBlock())
-        {
-            ctc.setIsCrossBar("Yes");
-        }
-        else
-        {
-            ctc.setIsCrossBar("No");
-        }
+        
         if (next >= blocks.size()-1){
             //don't check for crossing
         }
@@ -232,7 +239,7 @@ public class TrackModel
                         break;
                     }
                 }
-                ctc.setCrossBarStatus("Dropped Crossbar");
+                ctc.setCrossBarStatus("Dropped Crossbar", trackID);
                 temp.dropCrossBar(next + 1, this);
             }
         }
@@ -249,11 +256,11 @@ public class TrackModel
                     break;
                 }
             }
-            ctc.setCrossBarStatus("Raised Crossbar");
+            ctc.setCrossBarStatus("Raised Crossbar", trackID);
             temp.raiseCrossBar(curr, this);
         }
         
-        ctc.setCurrBlock(next);
+        ctc.setCurrBlock(next, trainID);
         trains.remove(trainID);
         trains.put(trainID, next);
         
@@ -300,5 +307,15 @@ public class TrackModel
     public void addTrainToTrack(int t)
     {
         trains.put(t, 0);
+    }
+    
+    public HashMap<String, Integer> getStations()
+    {
+        return stationList;
+    }
+    
+    public String toString()
+    {
+        return trackID;
     }
 }

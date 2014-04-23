@@ -83,6 +83,8 @@ public class TrainModel
             this.speedLimit = myLine.getSpeedLimit(blockID);
             this.blockLength = myLine.getBlockLength(blockID);
             this.authority = myLine.getAuthority(blockID, id);
+            this.beacon=myLine.getBeacon(blockID);
+            
             //ask Yanis what his underground var and getter is.
             //this.underground = red.get
         }
@@ -246,7 +248,6 @@ public class TrainModel
         //convert m/s*s to mph/s
         acceleration=accelControl+accelGrav-accelFrict;
         acceleration = acceleration * 2.23693629;
-        System.out.println(acceleration);
         
         if (brake > 0 && !failure.brakeFail)
         {
@@ -320,7 +321,6 @@ public class TrainModel
     public void calcDistance(double elapsedTime)
     {
         internal.distanceTraveled += (speed*elapsedTime)/3600;
-        //System.out.println(blockLength+" "+internal.distanceTraveled);
         if (internal.distanceTraveled >= blockLength)
         {
             moveToNewBlock();
@@ -354,11 +354,10 @@ public class TrainModel
     
     public void moveToNewBlock()
     {        
-        prevBlockID = blockID;
         
         if (lineNo == 1)
         {
-            blockID = myLine.getNextBlock(blockID, prevBlockID, this.id);
+            blockID = myLine.getNextBlock(blockID, prevBlockID,id);
             grade = myLine.getGrade(blockID);
             speedLimit = myLine.getSpeedLimit(blockID);
             blockLength = myLine.getBlockLength(blockID);
@@ -384,6 +383,7 @@ public class TrainModel
         {
             System.out.println("Waluigi says: 'Never miss an opportunity to hide a secret message in an unreachable if case.'");
         }
+        prevBlockID = blockID;
         
         internal.distanceTraveled -=blockLength;
         remainingAuthority -= 1;
@@ -414,4 +414,5 @@ public class TrainModel
     {
     	return internal.getMaxAcceleration();
     }
+    
 }

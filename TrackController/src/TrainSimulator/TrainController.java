@@ -8,15 +8,20 @@
 package TrainSimulator;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 /*This class is the main Class for the train Controller
  * it will do all the calculation, specification and communication
  * with the TrainControllerGUI and the TrainModel
  */
 
+/**
+ * @author Hongyao Shi
+ */
+
 public class TrainController 
 {   
-        public int controllerID;
+    public int controllerID;
 	
 	public double trainMass;
 	public double maxAcceleration;
@@ -54,9 +59,13 @@ public class TrainController
 	public int suggestedDoorStats;
 	public int brakeSignal;
 	public int emergencyBrakeSignal;
+	public int engineFailure;
+	public int signalFailure;
+	public int brakeFailure;
 	public TrainModel traincart;
 	public TrainControllerGUI trainGUI;
 	public SafeControl safeControl;
+	public TrainModelFailGUI failGUI;
 	int tempAuthority[]=new int[2];		//temperary spot to store authority from the trainModel
 	public int beaconValue=0;
 	
@@ -67,7 +76,7 @@ public class TrainController
 	double timeStep=0.1;
 	public static double kp=1000;		//Proportional gain
 	public static double ki=20;			//Integral gain
-	public String[] stoppedStation;     //list of the station to stop at
+	public ArrayList<String> stoppedStation;     //list of the station to stop at
 	
 	//DecimalFormat df = new DecimalFormat("#.###");
 	
@@ -77,27 +86,35 @@ public class TrainController
 	{
 		this.controllerID=id;
 		traincart=new TrainModel(line, id);
+		failGUI=new TrainModelFailGUI();
 		traincart.setBlockID(trainStart);
 		trainGUI=new TrainControllerGUI();
 		trainGUI.trainID=id;
 		safeControl=new SafeControl(trackSpeedLimit);	
 	}
 	
-	/*This function is created so that when the clock is ticking, 
+	/**
+	 *This function is created so that when the clock is ticking, 
 	 * the commands in this function can be called in order
 	 */
+	
 	void executeGUI()
 	{
-		
+		int[] failMatrix=new int[3];
+		failMatrix=failGUI.getFailure();
+		engineFailure=failMatrix[0];
+		signalFailure=failMatrix[1];
+		brakeFailure=failMatrix[2];
            
 		currentSpeed=traincart.getSpeed();
 		maxAcceleration=traincart.getMaxAcceleration();
 		maxPower=traincart.getMaxPower();
 		trainMass=traincart.getTotalMass();
+		currentAuthority=traincart.getRemainingAuthority();
 		
-		currentSpeedRightUnit=0.44704*currentSpeed;
-		maxAccelerationRightUnit=0.44704*maxAcceleration;
-		suggestedSpeedRightUnit=0.44704*suggestedSpeed;
+		currentSpeedRightUnit=2.23694*currentSpeed;
+		maxAccelerationRightUnit=2.23694*maxAcceleration;
+		suggestedSpeedRightUnit=2.23694*suggestedSpeed;
 		//the above 3 lines convert the number into international unit for calculation
 		
 		speedBackup=trainGUI.setSpeedNumber;
@@ -108,6 +125,11 @@ public class TrainController
 		//be compared to current set value to avoid repeating getting the same value and not
 		//updating
 		suggestedSpeed=traincart.getDesiredSpeed();
+		
+		if(currentAuthority==0||engineFailure==1||signalFailure==1)
+		{
+			trainGUI.emergencyBrakeSignal=1;
+		}
 		
 		if(suggestedSpeed==trackDesiredSpeed)
 		{
@@ -147,6 +169,8 @@ public class TrainController
 		suggestedDoorStats=trainGUI.getGUIDoorSwitch();
 		brakeSignal=trainGUI.getBrake();
 		emergencyBrakeSignal=trainGUI.getEmergencyBrake();
+	
+		
 		
 		safeSpeed=safeControl.checkTrainSpeed(suggestedSpeed,suggestedSpeedLimit);
 		safeSpeedLimit=safeControl.checkTrainSpeedLimit(suggestedSpeedLimit);
@@ -160,6 +184,10 @@ public class TrainController
 		safePower2=computerPower(suggestedSpeedRightUnit, currentSpeedRightUnit,maxPower);
 		safePower3=computerPower(suggestedSpeedRightUnit, currentSpeedRightUnit,maxPower);
 		safePower=safeControl.checkConsistency(safePower1,safePower2,safePower3);
+		if(brakeFailure==1)
+		{
+			safePower=0;
+		}
 		updatePowerStep();
 		//The above 4 lines calculate the power output to the trainModel 3 times and then check for 
 		//consistency to for safe critic
@@ -173,6 +201,10 @@ public class TrainController
 		if(trainGUI.setAuthorityChange==1)
 		{
 			putSafeAuthority(safeAuthority);
+			trainGUI.emergencyBrakeSignal=0;
+			trainGUI.brakeSignal=0;
+			//trainGUI.emergencyBrakeSignal=1;
+			
 		}
 		//The above 3 lines check if the authority is a new input instead 
 		//an old input to avoid keep refreshing the authority
@@ -239,12 +271,13 @@ public class TrainController
 			}
 		}
 	}
-		
 	
-	/*The following function receives beacon signals from the 
+	
+	/**
+	 *The following function receives beacon signals from the 
 	 * train model, and based on the content of the signal, train controller
 	 * will decide whether to stop the train or not
-	 */
+	 */	
 	void executeBeacon()
 	{
 		String stationName=traincart.getBeacon();
@@ -252,9 +285,9 @@ public class TrainController
 		{}
 		else
 		{
-			for(int i=0; i<stoppedStation.length;i++)
+			for(int i=0; i<stoppedStation.size();i++)
 			{
-				if(stationName.equals(stoppedStation[i]))
+				if(stationName.equals(stoppedStation.get(i)))
 				{
 					trainGUI.annoucement.append("Approaching "+stationName+"\n");	
 					trainGUI.emergencyBrakeSignal=1;
@@ -265,58 +298,103 @@ public class TrainController
 		}
 	}
 	
-	/*the folloing function put the brake signal from the train controller
+	/**
+	 *the folloing function put the brake signal from the train controller
 	 * into the train model
+	 *
+	 * @param  brakeSignal an int given by the train controller to assign the brake in the train model
 	 */
+	
 	void putBrake(int brakeSignal)
 	{
 		traincart.brake=brakeSignal;
 	}
 	
+	/**
+	 *The following function assigns the train models emergency brake
+	 *
+	 * @param  emergencyBrakeSignal an int given by the train controller to assign the emergency brake in the train model
+	 */
 	
-	/*The following function assigns the train models emergency brake*/
 	void putEmergencyBrake(int emergencyBrakeSignal)
 	{
 		traincart.emergencyBrake=emergencyBrakeSignal;
 	}
 	
-	/*The following function assigns the train models power*/
+	/**
+	 *The following function assigns the train models power
+	 *
+	 * @param  inputPower an double given by the train controller to assign the power in the train model
+	 */
+	
 	void putSafePower(double inputPower)
 	{
 		traincart.setPower(inputPower);
 	}
 	
-	/*The following function assigns the train models light status*/
+	/**
+	 *The following function assigns the train models light status
+	 *
+	 * @param  inputLight an double given by the train controller to assign the light status in the train model
+	 */
+
 	void putSafeLight(int inputLight)
 	{
 		traincart.setDoorStatus(inputLight);
 	}
 	
-	/*The following function assigns the train models door status*/
+	/**
+	 *The following function assigns the train models door status
+	 *
+	 * @param  inputDoor an double given by the train controller to assign the door status in the train model
+	 */
+
 	void putSafeDoor(int inputDoor)
 	{
 		traincart.setDoorStatus(inputDoor);
 	}
 	
-	/*The following function assigns the train models temperature*/
+	/**
+	 *The following function assigns the train models temperature
+	 *
+	 * @param  inputTemp an double given by the train controller to assign the safe temperature in the train model
+	 */
+	
 	void putSafeTemp(double inputTemp)
 	{
 		traincart.setTemperature(inputTemp);
 	}
 	
-	/*The following function assigns the train models speedlimit*/
+	/**
+	 *The following function assigns the train models speedlimit
+	 *
+	 * @param  inputSpeedLimit an double given by the train controller to assign the safe speed limit in the train model
+	 */
+	
 	void putSafeSpeedLimit(double inputSpeedLimit)
 	{
 		traincart.speedLimit=inputSpeedLimit;
 	}
 	
-	/*The following function assigns the train models authority*/
+	/**
+	 *The following function assigns the train models authority
+	 *
+	 * @param  inputAuthority an double given by the train controller or track to assign the safe authority in the train model
+	 */
+	
 	void putSafeAuthority(double inputAuthority)
 	{
 		traincart.remainingAuthority=inputAuthority;
 	}
 	
-	/*The following function computes the output power using the stored velocity error and the u*/
+	/**
+	 *The following function computes the output power using the stored velocity error and the u
+	 *
+	 * @param  suggestedSpeed a double value that represents the current desired speed of the train in m/s
+	 * @param  currentSpeed a double value that represents the current speed of the train in m/s
+	 * @param  maxPower a double value that represents that maxPower of the train in W
+	 * @return the power input to the train 
+	 */
 	double computerPower(double suggestedSpeed, double currentSpeed, double maxPower)
 	{
 		vErrorCurrent=suggestedSpeed-currentSpeed;
@@ -337,34 +415,59 @@ public class TrainController
 		return outputPower;
 	}
 	
+	/**
+	 *The following function updates the previous velocity error and previous u
+	 *
+	 */
+	
 	void updatePowerStep()
 	{
 		vErrorPrevious=vErrorCurrent;
 		uPrevious=uCurrent;
 	}
 	
-	/*The following function minimizes the current GUI*/
+	/**
+	 *The following function minimizes the current GUI
+	 */
+	
 	void minimalize()
 	{
 		this.trainGUI.minimalize();
+		this.failGUI.minimalize();
 	}
 	
-	/*The following function normalize the GUI*/
+	/**
+	 *The following function normalize the current GUI
+	 */
+	
 	void normalize()
 	{
 		this.trainGUI.normalize();
+		this.failGUI.normalize();
 	}
 	
-	/*The following function gather the station list name so that it can stopped at the assginment stations*/
-	void setStationList(String[] stationList)
+	/**
+	 *The following function Assign the stations the train will stop at
+	 *
+	 *@param stationList A arrayList of Strings with stations in it
+	 */
+	
+	void setStationList(ArrayList<String> stationList)
 	{
 		this.stoppedStation=stationList; 
-        }
+        
+	}
 	
-        public String toString()
-        {
-            return("Train " + Integer.toString(traincart.id));
-        }
+	/**
+	 *The following function change the train ID to a string
+	 *
+	 *@return it returns the train id in string form
+	 */
+	
+    public String toString()
+    {
+        return("Train " + Integer.toString(traincart.id));
+    }
 	/*The test main function for the sub module*/
 	/*public static void main(String[] args)
 	{

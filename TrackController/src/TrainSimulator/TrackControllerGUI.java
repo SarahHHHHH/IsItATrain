@@ -17,7 +17,11 @@ public class TrackControllerGUI extends javax.swing.JFrame {
     TrackModel redLine, greenLine;
     
     /**
-     * Creates a new form TrackControllerForm
+     * This Constructor creates a new TrackController GUI
+     * 
+     * @param ctc The CTC controlling the system
+     * @param redLine The Red Track Line
+     * @param greenLine The Green Track Line
      */
     public TrackControllerGUI(PhantomCTCGUI ctc, TrackModel redLine, TrackModel greenLine) {
         /*Set the CTC*/
@@ -41,6 +45,8 @@ public class TrackControllerGUI extends javax.swing.JFrame {
 
         switchStateGroup = new javax.swing.ButtonGroup();
         railwayStateGroup = new javax.swing.ButtonGroup();
+        trackCircuitGroup = new javax.swing.ButtonGroup();
+        railGroup = new javax.swing.ButtonGroup();
         blockControlPanel = new javax.swing.JPanel();
         speedButt = new javax.swing.JButton();
         dropRailRadio = new javax.swing.JRadioButton();
@@ -173,14 +179,38 @@ public class TrackControllerGUI extends javax.swing.JFrame {
 
         jLabel27.setText("Control Rail");
 
+        trackCircuitGroup.add(badCircuitRadio);
         badCircuitRadio.setText("Bad Circuit");
+        badCircuitRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                badCircuitRadioActionPerformed(evt);
+            }
+        });
 
+        trackCircuitGroup.add(goodCircuitRadio);
         goodCircuitRadio.setText("Good Circuit");
+        goodCircuitRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goodCircuitRadioActionPerformed(evt);
+            }
+        });
 
+        railGroup.add(breakRailRadio);
         breakRailRadio.setText("Broken Rail");
+        breakRailRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                breakRailRadioActionPerformed(evt);
+            }
+        });
 
+        railGroup.add(goodRailRadio);
         goodRailRadio.setText("Good Rail");
         goodRailRadio.setToolTipText("");
+        goodRailRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goodRailRadioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout blockControlPanelLayout = new javax.swing.GroupLayout(blockControlPanel);
         blockControlPanel.setLayout(blockControlPanelLayout);
@@ -847,6 +877,31 @@ public class TrackControllerGUI extends javax.swing.JFrame {
     private void trackComboSelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trackComboSelActionPerformed
         //Get the Item Selected
         int item = this.trackComboSel.getSelectedIndex();
+        DefaultComboBoxModel blockStrings = new DefaultComboBoxModel();
+        
+        //Figure out which Blocks to display in the Block Combo Box
+        switch (item){
+            //Red Line
+            case 1:
+                /*Populate the Box Select JComboBox for RedLine*/
+                blockStrings.addElement("None");
+                System.out.println(this.ctc.getRedLineNumOfBlocks());
+                for (int index = 0; index < this.ctc.getRedLineNumOfBlocks(); index++)
+                    blockStrings.addElement("Block "+index);
+                this.blockComboSel.setModel(blockStrings);
+                this.blockComboSel.setSelectedIndex(0);
+                break;
+            //Green Line
+            case 2:
+                /*Populate the Box Select JComboBox for GreenLine*/
+                blockStrings.addElement("None");
+                System.out.println(this.ctc.getGreenLineNumOfBlocks());
+                for (int index = 0; index < this.ctc.getGreenLineNumOfBlocks(); index++)
+                    blockStrings.addElement("Block "+index);
+                this.blockComboSel.setModel(blockStrings);
+                this.blockComboSel.setSelectedIndex(0);
+                break;
+        }
         
         switch (item){
             case 0:
@@ -868,7 +923,10 @@ public class TrackControllerGUI extends javax.swing.JFrame {
                    this.hideBlockInfo(); 
                 }
         }
+        
         System.out.println("track select changed");
+        
+        this.refreshBlockInfoDisplay();
     }//GEN-LAST:event_trackComboSelActionPerformed
 
     /** 
@@ -902,6 +960,119 @@ public class TrackControllerGUI extends javax.swing.JFrame {
         }
         System.out.println("block select changed");
     }//GEN-LAST:event_blockComboSelActionPerformed
+
+    
+    /**
+     * This method sets the Track Circuit status at the selected block to Fine
+     */
+    private void goodCircuitRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goodCircuitRadioActionPerformed
+        /* Set this Track Circuit as Good and Functional */
+        
+        //Get the Item Selected
+        int item = (this.blockComboSel.getSelectedIndex()-1);
+        
+        System.out.println("Set Track Circuit as Good");
+        
+        //Which Line are we paying attentino to?
+        TrackModel theLine = ((this.trackComboSel.getSelectedIndex() == 1) ? this.redLine: this.greenLine);
+        
+        //Get the TrackController monitoring this block
+        TrackController temp = this.getTrackControllerForBlock(theLine.getLineControllers(), item);
+
+        //Tell Track Controller this Track Circuit was fixed
+        temp.getTrackStatus().fixedBadTrackCircuitHere(item);
+        
+        //Set track circuit failure to false
+        theLine.blocks.get(item).trackCircuitFailure = false;
+        
+        //Refresh GUI
+        this.refreshBlockInfoDisplay();
+        
+    }//GEN-LAST:event_goodCircuitRadioActionPerformed
+
+    
+    /**
+     * This method sets the Track Circuit status at the selected block to Bad
+     */
+    private void badCircuitRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_badCircuitRadioActionPerformed
+        /* Set this Track Circuit as Bad and Non-Functional */
+        
+        //Get the Item Selected
+        int item = (this.blockComboSel.getSelectedIndex()-1);
+        
+        System.out.println("Set Track Circuit as Bad");
+        
+        //Which Line are we paying attentino to?
+        TrackModel theLine = ((this.trackComboSel.getSelectedIndex() == 1) ? this.redLine: this.greenLine);
+        
+        //Get the TrackController monitoring this block
+        TrackController temp = this.getTrackControllerForBlock(theLine.getLineControllers(), item);
+
+        //Tell Track Controller this Track Circuit was fixed
+        temp.getTrackStatus().badTrackCircuitDetected(item);
+        
+        //Set track circuit failure to false
+        theLine.blocks.get(item).trackCircuitFailure = true;
+        
+        //Refresh GUI
+        this.refreshBlockInfoDisplay();
+    }//GEN-LAST:event_badCircuitRadioActionPerformed
+
+    
+    /**
+     * This method sets the Rail status at the selected block to Fine
+     */
+    private void goodRailRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goodRailRadioActionPerformed
+        /* Set the Rail Status as Fine */
+        
+        //Get the Item Selected
+        int item = (this.blockComboSel.getSelectedIndex()-1);
+        
+        System.out.println("Set Rail Status as Fine");
+        
+        //Which Line are we paying attentino to?
+        TrackModel theLine = ((this.trackComboSel.getSelectedIndex() == 1) ? this.redLine: this.greenLine);
+        
+        //Get the TrackController monitoring this block
+        TrackController temp = this.getTrackControllerForBlock(theLine.getLineControllers(), item);
+
+        //Tell Track Controller this Track Circuit was fixed
+        temp.getTrackStatus().fixedBrokenRailHere(item);
+        
+        //Set track circuit failure to false
+        theLine.blocks.get(item).brokenRailDetection = false;
+        
+        //Refresh GUI
+        this.refreshBlockInfoDisplay();
+    }//GEN-LAST:event_goodRailRadioActionPerformed
+    
+    
+    /**
+     * This method sets the Rail status at the selected block to Broken
+     */
+    private void breakRailRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_breakRailRadioActionPerformed
+        /* Set the Rail Status as Broken */
+        
+        //Get the Item Selected
+        int item = (this.blockComboSel.getSelectedIndex()-1);
+        
+        System.out.println("Set Rail Status as Broken");
+        
+        //Which Line are we paying attentino to?
+        TrackModel theLine = ((this.trackComboSel.getSelectedIndex() == 1) ? this.redLine: this.greenLine);
+        
+        //Get the TrackController monitoring this block
+        TrackController temp = this.getTrackControllerForBlock(theLine.getLineControllers(), item);
+
+        //Tell Track Controller this Track Circuit was fixed
+        temp.getTrackStatus().brokenRailsDetected(item);
+        
+        //Set track circuit failure to false
+        theLine.blocks.get(item).brokenRailDetection = true;
+        
+        //Refresh GUI
+        this.refreshBlockInfoDisplay();
+    }//GEN-LAST:event_breakRailRadioActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -954,6 +1125,7 @@ public class TrackControllerGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JRadioButton openSRadio;
+    private javax.swing.ButtonGroup railGroup;
     private javax.swing.JLabel railOnMeVal;
     private javax.swing.JLabel railStateVal;
     private javax.swing.ButtonGroup railwayStateGroup;
@@ -967,6 +1139,7 @@ public class TrackControllerGUI extends javax.swing.JFrame {
     private javax.swing.JLabel switchOnMeVal;
     private javax.swing.ButtonGroup switchStateGroup;
     private javax.swing.JLabel switchStateVal;
+    private javax.swing.ButtonGroup trackCircuitGroup;
     private javax.swing.JLabel trackCircuitVal;
     private javax.swing.JComboBox trackComboSel;
     private javax.swing.JLabel trackRailVal;
@@ -1076,8 +1249,8 @@ public class TrackControllerGUI extends javax.swing.JFrame {
         
         /*Populate the Box Select JComboBox*/
         blockStrings.addElement("None");
-        System.out.println(this.ctc.getNumOfBlocks());
-        for (int index = 0; index < this.ctc.getNumOfBlocks(); index++)
+        System.out.println(this.ctc.getRedLineNumOfBlocks());
+        for (int index = 0; index < this.ctc.getRedLineNumOfBlocks(); index++)
             blockStrings.addElement("Block "+index);
         this.blockComboSel.setModel(blockStrings);
         this.blockComboSel.setSelectedIndex(0);
@@ -1153,7 +1326,7 @@ public class TrackControllerGUI extends javax.swing.JFrame {
             //Set Track Controller Monitoring
             this.wcMonitorVal.setText(""+temp.getTrackControllerIdentifier());
             //Set Track Block is on
-            this.trackVal.setText("Red Line");
+            this.trackVal.setText((this.trackComboSel.getSelectedIndex() == 1) ? "Red Line" : "Green Line");
             //Set Block Number
             this.blockVal.setText(""+item);
             //Am I a train station? ->need to implement getting station name
@@ -1247,6 +1420,27 @@ public class TrackControllerGUI extends javax.swing.JFrame {
             //Is there a train on me?
             this.trainOnMeVal.setText(theLine.blocks.get(item).trainOnBlock() ? ("Yes, Train ID: "+theLine.getTrainID(item)):"No");
             
+            //Is the Track Circuit Located at this Block Good or Bad?
+            this.trackCircuitVal.setText(theLine.blocks.get(item).trackCircuitFailure ? "Bad Track Circuit": "Track Circuit is Fine");
+            
+            //Set the appropriate Track Circuit Radio Button 
+            if (theLine.blocks.get(item).trackCircuitFailure){
+                this.badCircuitRadio.setSelected(true);
+            }
+            else{
+                this.goodCircuitRadio.setSelected(true);
+            }
+            
+            //Is the Rail on the Block Broken or Fine?
+            this.trackRailVal.setText(theLine.blocks.get(item).brokenRailDetection ? "Rail is Broken Here":"Rail is Fine");
+            
+            //Set te appropriate Rail Radio Button
+            if(theLine.blocks.get(item).brokenRailDetection){
+                this.breakRailRadio.setSelected(true);
+            }
+            else{
+                this.goodRailRadio.setSelected(true);
+            }
         }
     }
 }

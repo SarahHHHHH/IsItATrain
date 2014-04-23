@@ -76,6 +76,7 @@ public class RailwayCrossing {
         * 
         * @param logicPoints The existence of a train at different locations
         * along the track
+        * @return Whether we drop the Railway Crossing Bar or not
         */
 	public boolean doWeDropCrossing(ArrayList<String> logicPoints){
 		boolean val1, val2, val3;
@@ -102,6 +103,7 @@ public class RailwayCrossing {
         * 
         * @param logicPoints The existence of a train at different locations
         * along the track
+        * @return Whether we raise the Railway Crossing Bar or not
         */
 	public boolean doWeRaiseCrossing(ArrayList<String> logicPoints){
 		boolean val1, val2, val3;

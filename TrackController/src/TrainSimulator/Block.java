@@ -17,6 +17,8 @@ public class Block
     boolean crossing = false;
     boolean underground = false;
     boolean switchPresent = false;
+    boolean trackCircuitFailure = false;
+    boolean brokenRailDetection = false;
     String stationName;
     int switch_id;
     double trackTemp = 75;
@@ -27,7 +29,6 @@ public class Block
     public double speed = 0;
     public int authority = 0;
     int blockID;
-    int errorFlag = 0;
 
     public Block(String s)
     {
@@ -131,16 +132,11 @@ public class Block
     {
         if(station)
         {
-            return("Station");
+            return(stationName);
         }
         else
         {
             return ("None");
         }
-    }
-    public int isFunctional()
-    {
-
-        return this.errorFlag;
     }
 }

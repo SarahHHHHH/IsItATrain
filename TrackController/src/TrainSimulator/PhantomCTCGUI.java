@@ -8,6 +8,7 @@
  *
  * @author yanisoukaci
  */
+
 package TrainSimulator;
 import java.util.*;
 
@@ -17,15 +18,16 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
     ArrayList<TrainController> trains = new ArrayList<>();
     ArrayList<TrackController> red_controllers = new ArrayList<>();
     ArrayList<TrackController> green_controllers = new ArrayList<>();
-    ArrayList<Switch> switches_r = new ArrayList<>();
-    ArrayList<Switch> switches_g = new ArrayList<>();
+    ArrayList<Switch> switches = new ArrayList<>();
     ArrayList<Double> speeds = new ArrayList<>();
     ArrayList<Double> authorities = new ArrayList<>();
+    HashMap<String, Integer> redStations = new HashMap<>();
+    HashMap<String, Integer> greenStations = new HashMap<>();
     TC_MAINGUI wc;
     TimerTask clock;
     Timer timer;
     int counter = 1;
-    public int numOfBlocks = 10;
+    int numOfBlocks = 10;
     
     /**
      * Creates new form PhantomCTCGUI
@@ -46,13 +48,35 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
     {
         return (1/timer_slider.getValue());
     }
-    public void setNumOfBlocks(int num){
-        //sets the number of blocks
-        this.numOfBlocks = num;
+    
+    public int getRedLineNumOfBlocks()
+    {
+        return red.getTrackSize();
     }
     
-    public int getNumOfBlocks(){
-        return this.numOfBlocks;
+    public int getGreenLineNumOfBlocks()
+    {
+        return green.getTrackSize();
+    }
+    
+    public void setCrossBarStatus(String s, String id)
+    {
+        if(id.equals("Red Line"))
+        {
+            redCrossBar.setText(s);
+        }
+        else if(id.equals("Green Line"))
+        {
+            greenCrossBar.setText(s);
+        }
+    }
+    
+    public void setCurrBlock(int b, int i)
+    {
+        if(trainList.getSelectedIndex() == (i - 1))
+        {
+            curr_block.setText(Integer.toString(b));
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -68,6 +92,15 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
         buttonGroup2 = new javax.swing.ButtonGroup();
         buttonGroup3 = new javax.swing.ButtonGroup();
         buttonGroup4 = new javax.swing.ButtonGroup();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jPopupMenu2 = new javax.swing.JPopupMenu();
+        jOptionPane1 = new javax.swing.JOptionPane();
+        jOptionPane2 = new javax.swing.JOptionPane();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu3 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
         load = new javax.swing.JButton();
         speedVal = new javax.swing.JTextField();
         authorityVal = new javax.swing.JTextField();
@@ -79,8 +112,7 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
         curr_block = new javax.swing.JLabel();
         updateGUI = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        crossBarPresent = new javax.swing.JLabel();
-        crossBarStatus = new javax.swing.JLabel();
+        redCrossBar = new javax.swing.JLabel();
         pause_button = new javax.swing.JButton();
         timer_slider = new javax.swing.JSlider();
         addTrain = new javax.swing.JButton();
@@ -88,8 +120,24 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
         switchList = new javax.swing.JComboBox();
         closeSwitch = new javax.swing.JButton();
         openSwitch = new javax.swing.JButton();
+        lineList = new javax.swing.JComboBox();
+        jLabel5 = new javax.swing.JLabel();
+        greenCrossBar = new javax.swing.JLabel();
+        lineName = new javax.swing.JLabel();
+        stationList = new javax.swing.JComboBox();
+        sendToStation = new javax.swing.JButton();
 
         jRadioButton1.setText("jRadioButton1");
+
+        jMenu1.setText("jMenu1");
+
+        jMenu2.setText("jMenu2");
+
+        jMenu3.setText("File");
+        jMenuBar1.add(jMenu3);
+
+        jMenu4.setText("Edit");
+        jMenuBar1.add(jMenu4);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -100,9 +148,9 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
             }
         });
 
-        speedVal.setText("---");
+        speedVal.setText("25");
 
-        authorityVal.setText("---");
+        authorityVal.setText("20");
 
         jLabel1.setText("Speed");
 
@@ -133,11 +181,9 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setText("Crossing on Block");
+        jLabel4.setText("Red Crossing");
 
-        crossBarPresent.setText("----");
-
-        crossBarStatus.setText("----------");
+        redCrossBar.setText("----------");
 
         pause_button.setText("Stop");
         pause_button.addActionListener(new java.awt.event.ActionListener() {
@@ -179,90 +225,111 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
         });
 
         openSwitch.setText("Open Switch");
+        openSwitch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openSwitchActionPerformed(evt);
+            }
+        });
+
+        lineList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lineListActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Green Crossing");
+
+        greenCrossBar.setText("----------");
+
+        lineName.setText("----------");
+
+        sendToStation.setText("Send Train to Station");
+        sendToStation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendToStationActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jLabel4)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(16, 16, 16)
+                .addComponent(timer_slider, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(58, 58, 58)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(76, 76, 76)
-                                        .addComponent(crossBarPresent))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(curr_block)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(crossBarStatus)
-                                .addGap(54, 54, 54))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(authorityVal, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(speedVal, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(34, 34, 34)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(pushSpeed)
-                                            .addComponent(pushAuthority))
-                                        .addGap(55, 55, 55)
-                                        .addComponent(trainList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(closeSwitch))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(addTrain)
-                            .addComponent(load))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                        .addComponent(switchList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(updateGUI)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(18, 18, 18)
                                 .addComponent(pause_button))
-                            .addComponent(timer_slider, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(25, Short.MAX_VALUE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(load)
+                                .addComponent(openSwitch)
+                                .addComponent(lineName, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(switchList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(openSwitch)
-                        .addGap(78, 78, 78))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(trainList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel2)
+                                                .addComponent(jLabel1))
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(authorityVal, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(speedVal, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(jLabel4))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addGap(68, 68, 68)))
+                                .addGap(34, 34, 34)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(redCrossBar)
+                                    .addComponent(pushAuthority)
+                                    .addComponent(greenCrossBar)
+                                    .addComponent(pushSpeed)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(closeSwitch)
+                                            .addComponent(jLabel3))
+                                        .addGap(23, 23, 23)
+                                        .addComponent(curr_block, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(lineList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(addTrain))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(stationList, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(sendToStation)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(timer_slider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(updateGUI)
-                            .addComponent(pause_button)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(load)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(addTrain)))
+                .addGap(9, 9, 9)
+                .addComponent(timer_slider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(updateGUI)
+                    .addComponent(pause_button)
+                    .addComponent(lineList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addTrain))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(speedVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(pushSpeed)
-                    .addComponent(trainList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pushSpeed))
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(authorityVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -273,16 +340,27 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
                     .addComponent(switchList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(closeSwitch)
                     .addComponent(openSwitch))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(trainList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
                     .addComponent(curr_block)
-                    .addComponent(jLabel3))
-                .addGap(27, 27, 27)
+                    .addComponent(lineName))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(stationList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sendToStation))
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(crossBarPresent)
-                    .addComponent(crossBarStatus))
-                .addGap(61, 61, 61))
+                    .addComponent(redCrossBar))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(load)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(greenCrossBar)))
+                .addGap(37, 37, 37))
         );
 
         pack();
@@ -294,22 +372,40 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
         
         //put train on red line
         red = new TrackModel("red_line.txt", this);
-        green = new TrackModel("red_line.txt", this);
+        lineList.addItem(red);
+        redStations = red.getStations();
+        green = new TrackModel("green_line.txt", this);
+        greenStations = green.getStations();
+        lineList.addItem(green);
         red_controllers = red.getLineControllers();
-        //green_controllers = green.getLineControllers();
-        switches_r = red.getSwitchList();
-        //switches_g = red.getSwitchList();
-        for(Switch s : switches_r)
+        green_controllers = green.getLineControllers();
+        for(Switch s : red.getSwitchList())
+        {
+            switches.add(s);
+        }
+        for(Switch s : green.getSwitchList())
+        {
+            switches.add(s);
+        }
+        for(Switch s : switches)
         {
             switchList.addItem(s);
         }
-        speeds.add(25.00);
-        authorities.add(25.00);
+        speeds.add(0,Double.parseDouble(speedVal.getText()));
+        speeds.add(1,Double.parseDouble(speedVal.getText()));
+        authorities.add(0,Double.parseDouble(authorityVal.getText()));
+        authorities.add(1,Double.parseDouble(authorityVal.getText()));
         wc = new TC_MAINGUI(this, red, green);
         tc = new TrainController(red, counter, 0);
         counter++;
         trains.add(tc);
         red.addTrainToTrack(counter - 1);
+        trainList.addItem(tc);
+        lineName.setText(red.toString());
+        tc = new TrainController(green, counter, 0);
+        counter++;
+        trains.add(tc);
+        green.addTrainToTrack(counter - 1);
         trainList.addItem(tc);
             
     }//GEN-LAST:event_loadActionPerformed
@@ -344,12 +440,20 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
 
     private void addTrainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTrainActionPerformed
         // TODO add your handling code here:
-        speeds.add(25.00);
-        authorities.add(25.00);
-        tc = new TrainController(red, counter, 0);
+        
+        speeds.add(counter - 1,Double.parseDouble(speedVal.getText()));
+        authorities.add(counter - 1,Double.parseDouble(authorityVal.getText()));
+        tc = new TrainController((TrackModel)lineList.getSelectedItem(), counter, 0);
         tc.minimalize();
         counter++;
-        red.addTrainToTrack(counter - 1);
+        if(lineList.getSelectedIndex() == 0)
+        {    
+            red.addTrainToTrack(counter - 1);
+        }
+        else if(lineList.getSelectedIndex() == 1)
+        {
+            green.addTrainToTrack(counter - 1);
+        }
         trains.add(tc);
         trainList.addItem(tc);
     }//GEN-LAST:event_addTrainActionPerformed
@@ -357,8 +461,38 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
     private void closeSwitchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeSwitchActionPerformed
         // TODO add your handling code here:
         int x = switchList.getSelectedIndex();
-        
-        
+        if(switches.get(x).id > 5)
+        {
+            TrackController temp = red_controllers.get(0);
+            for(TrackController t : red_controllers)
+            {
+                TrackStatus s = t.getTrackStatus();
+               int start = s.getBlockStart();
+               int end = s.getBlockEnd();
+               if(switches.get(x).block_id[0] >= start && switches.get(x).block_id[0] <= end)
+               {
+                   temp = t;
+               }
+            }
+
+            temp.trackChange(red, switches.get(x).block_id[0], 0);
+        }
+        else
+        {
+           TrackController temp = green_controllers.get(0);
+            for(TrackController t : green_controllers)
+            {
+                TrackStatus s = t.getTrackStatus();
+               int start = s.getBlockStart();
+               int end = s.getBlockEnd();
+               if(switches.get(x).block_id[0] >= start && switches.get(x).block_id[0] <= end)
+               {
+                   temp = t;
+               }
+            }
+
+            temp.trackChange(green, switches.get(x).block_id[0], 0); 
+        }
     }//GEN-LAST:event_closeSwitchActionPerformed
 
     private void trainListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainListActionPerformed
@@ -368,21 +502,87 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
         {
             t.minimalize();
         }
+        curr_block.setText(Integer.toString(trains.get(x).traincart.blockID));
         trains.get(x).normalize();
+        lineName.setText(trains.get(x).traincart.myLine.toString());
     }//GEN-LAST:event_trainListActionPerformed
-    public void setCrossBarStatus(String s)
-    {
-        crossBarStatus.setText(s);
-    }
-    public void setIsCrossBar(String s)
-    {
-        crossBarPresent.setText(s);
-    }
-    public void setCurrBlock(int i)
-    {
-        curr_block.setText(Integer.toString(i));
-        //curr_block.setText(Integer.toString(0));
-    }
+
+    private void openSwitchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openSwitchActionPerformed
+        // TODO add your handling code here:
+        int x = switchList.getSelectedIndex();
+        if(switches.get(x).id > 5)
+        {
+            TrackController temp = red_controllers.get(0);
+            for(TrackController t : red_controllers)
+            {
+                TrackStatus s = t.getTrackStatus();
+               int start = s.getBlockStart();
+               int end = s.getBlockEnd();
+               if(switches.get(x).block_id[0] >= start && switches.get(x).block_id[0] <= end)
+               {
+                   temp = t;
+               }
+            }
+
+            temp.trackChange(red, switches.get(x).block_id[0], 1);
+        }
+        else
+        {
+            TrackController temp = green_controllers.get(0);
+            for(TrackController t : green_controllers)
+            {
+                TrackStatus s = t.getTrackStatus();
+               int start = s.getBlockStart();
+               int end = s.getBlockEnd();
+               if(switches.get(x).block_id[0] >= start && switches.get(x).block_id[0] <= end)
+               {
+                   temp = t;
+               }
+            }
+
+            temp.trackChange(green, switches.get(x).block_id[0], 1);
+        }
+    }//GEN-LAST:event_openSwitchActionPerformed
+
+    private void lineListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lineListActionPerformed
+        // TODO add your handling code here:
+        int x = lineList.getSelectedIndex();
+        stationList.removeAllItems();
+        if(x == 0)
+        {
+            for(String s : redStations.keySet())
+            {
+                stationList.addItem(s);
+            }
+        }
+        else if(x == 1)
+        {
+            for(String s : greenStations.keySet())
+            {
+                stationList.addItem(s);
+            }
+        }
+    }//GEN-LAST:event_lineListActionPerformed
+
+    private void sendToStationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendToStationActionPerformed
+        // TODO add your handling code here:
+        int x = trainList.getSelectedIndex();
+        String y = (String)stationList.getSelectedItem();
+        int current = trains.get(x).traincart.blockID;
+        int  stationBlock = 0;
+        double auth;
+        if(redStations.containsKey(y))
+        {
+            stationBlock = redStations.get(y);
+        }
+        else if(greenStations.containsKey(y))
+        {
+            stationBlock = greenStations.get(y);
+        }
+        auth = stationBlock - current;
+        authorities.add(x, auth);
+    }//GEN-LAST:event_sendToStationActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -425,20 +625,34 @@ public class PhantomCTCGUI extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.ButtonGroup buttonGroup4;
     private javax.swing.JButton closeSwitch;
-    private javax.swing.JLabel crossBarPresent;
-    private javax.swing.JLabel crossBarStatus;
     private javax.swing.JLabel curr_block;
+    private javax.swing.JLabel greenCrossBar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JOptionPane jOptionPane1;
+    private javax.swing.JOptionPane jOptionPane2;
+    private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JPopupMenu jPopupMenu2;
     private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JComboBox lineList;
+    private javax.swing.JLabel lineName;
     private javax.swing.JButton load;
     private javax.swing.JButton openSwitch;
     private javax.swing.JButton pause_button;
     private javax.swing.JButton pushAuthority;
     private javax.swing.JButton pushSpeed;
+    private javax.swing.JLabel redCrossBar;
+    private javax.swing.JButton sendToStation;
     private javax.swing.JTextField speedVal;
+    private javax.swing.JComboBox stationList;
     private javax.swing.JComboBox switchList;
     private javax.swing.JSlider timer_slider;
     private javax.swing.JComboBox trainList;
