@@ -5,9 +5,11 @@
  * Purpose: This class will implement a track controller for a given set of blocks on a track. 
  */
 package TrainSimulator;
-import javax.swing.*;
+import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.*;
+import java.io.*;
 
 
 /**
@@ -87,8 +89,14 @@ public class TrackController extends JFrame{
 	 			* 	*           *		TRUE        *			FALSE
 	 			* 	FALSE       FALSE	FALSE       FALSE		TRUE
 	 */
-	this.logicToLoad = "(!&(!&(!&(!))))";
-	for (int counter = 0; counter < 3; counter++)
+	//this.logicToLoad = "(!&(!&(!&(!))))";
+        try{
+            this.logicToLoad = (new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream("switchFromCloseToOpenLogic.txt"))))).readLine();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        for (int counter = 0; counter < 3; counter++)
 		this.switchFromCloseToOpen.add(new ValidateBooleanLogic(this.logicToLoad));
 	
 	/*Create the logicTable for the the "ValidateBooleanLogic" Class: -> Done
@@ -107,8 +115,14 @@ public class TrackController extends JFrame{
 	 			*	*	*		*           *		TRUE		FALSE
 	 			*	FALSE	FALSE		FALSE       FALSE	FALSE		TRUE
  	*/
-	this.logicToLoad = "(!&(!&(!&(!&(!)))))";
-	for (int counter = 0; counter < 3; counter++)
+	//this.logicToLoad = "(!&(!&(!&(!&(!)))))";
+	try{
+            this.logicToLoad = (new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream("switchFromOpenToCloseLogic.txt"))))).readLine();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        for (int counter = 0; counter < 3; counter++)
 		this.switchFromOpenToClose.add(new ValidateBooleanLogic(this.logicToLoad));
 	
 	

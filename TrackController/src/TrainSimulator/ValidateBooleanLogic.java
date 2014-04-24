@@ -80,7 +80,7 @@ public class ValidateBooleanLogic {
 				operator.push("&");
 			}
 			else if (this.logic.substring(index, index+1).equals("|")){
-				operator.push("&");
+				operator.push("|");
 			}
 			else if (this.logic.substring(index, index+1).equals(")")){
 				operator.push(")");

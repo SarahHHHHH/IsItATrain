@@ -1,0 +1,387 @@
+commit 7fad500f527ad284a639025cccf12f3b34320388
+Author: Derrick <dward330@gmail.com>
+Date:   Tue Apr 22 22:36:43 2014 -0400
+
+    Derrick's Version of the Whole System 04_22_2014 2
+    
+    Derrick's Version of the Whole System 04_22_2014 2
+
+commit 89a63516ad221fbb078bf11ca467c1c4e687edb6
+Author: Derrick <dward330@gmail.com>
+Date:   Tue Apr 22 20:03:36 2014 -0400
+
+    Derrick's Version of the Whole System 04_22_2014
+    
+    Derrick's Version of the Whole System 04_22_2014
+
+commit 3cafb178e03c700d27448db47f5cc28f774773c6
+Author: SarahHHHHH <seh97@pitt.edu>
+Date:   Tue Apr 22 09:41:17 2014 -0400
+
+    Finally adding train model.
+
+commit 8aef77625ca645af5d7eb71865c5d420640af8ac
+Author: SarahHHHHH <seh97@pitt.edu>
+Date:   Tue Apr 22 08:58:01 2014 -0400
+
+    Irrelevant syncing commit.
+
+commit 3401128b51d2fd14bff394da6e5c241734ac94a8
+Author: Derrick <dward330@gmail.com>
+Date:   Mon Apr 21 16:40:50 2014 -0400
+
+    Derrick's Version of the Whole System 04_21_2014
+    
+    Derrick's NetBeans Version of the Whole System 04_21_2014
+
+commit 1ec229fbcb67cdc5eb065c692a8b92c14606b126
+Author: Derrick <dward330@gmail.com>
+Date:   Mon Apr 14 20:20:42 2014 -0400
+
+    TrainSimulation
+    
+    Updated Phantom CTC, All Track Controller files, All Track Model Files,
+    TrainControllerGUI file. Track Controller is fully complete now
+    
+    -Derrick Ward
+
+commit 5704080dc74e4894343a1b1e712be9c1193e1e38
+Author: Derrick <dward330@gmail.com>
+Date:   Sun Apr 13 20:28:19 2014 -0400
+
+    Committing TrainSimulator
+    
+    Committing TrainSimulator
+    Derrick
+    TrackController
+    All Panes are done except control pane
+    Need to tie in update clock (button)
+
+commit 14f0f82c43601839f98d354b09460d643f8a5aa4
+Author: Derrick <dward330@gmail.com>
+Date:   Thu Mar 27 15:13:50 2014 -0400
+
+    dkw14TrackController uml lastest, TestPlan, Software Design
+    
+    dkw14TrackController uml lastest, TestPlan, Software Design
+
+commit a92ac57c62013f3e646171354a6fd36a2ed15ba3
+Author: Derrick <dward330@gmail.com>
+Date:   Thu Mar 27 14:47:19 2014 -0400
+
+    Track Controller SQA plan ver. 2, Test plan ver. 1
+    
+    Track Controller SQA plan ver. 2, Test plan ver. 1
+    Derrick Ward
+
+commit 7ee688b8558d6a109f072adf5bbacb05074bfba9
+Author: Derrick <dward330@gmail.com>
+Date:   Thu Mar 27 10:17:16 2014 -0400
+
+    Track Controller Software Quality Assurance Plan ver. 1
+    
+    Track Controller Software Quality Assurance Plan ver. 1
+    By Derrick Ward
+
+commit bbe2d94e18ad60832620c124afb78d0bd6821fcb
+Author: Derrick <dward330@gmail.com>
+Date:   Tue Mar 25 19:46:22 2014 -0400
+
+    Project Schedule
+    
+    Project Schedule for Work Package 2
+
+commit 04397db6aa33efbe03e544dd33be117d367d41a6
+Author: Derrick <dward330@gmail.com>
+Date:   Thu Mar 6 17:40:37 2014 -0500
+
+    commit emergnecy
+
+commit b909cc9578229d52749a56cf0e438e399d487e3b
+Author: Derrick <dward330@gmail.com>
+Date:   Thu Mar 6 17:20:15 2014 -0500
+
+    System Wide UML and Track Controller UML
+    
+    System Wide UML Ver. 5
+    Track Controller UML Ver. 4
+
+commit f9bf109501d1fcfca397081c2aca6bef03cab629
+Author: Derrick <dward330@gmail.com>
+Date:   Thu Mar 6 15:17:17 2014 -0500
+
+    Design Review Slides Ver. 2
+    
+    Design Review Slides Ver. 2
+
+commit 82de886b6543da75772cb46ad1adbdafc26357e5
+Author: Derrick <dward330@gmail.com>
+Date:   Thu Mar 6 15:14:52 2014 -0500
+
+    System Wide UML and Track Controller UML
+    
+    System Wide UML Ver. 4
+    Track Controller UML Ver. 3
+
+commit de2856ae2b472ffaa93983a99cff3aadd4763cde
+Author: Derrick <dward330@gmail.com>
+Date:   Thu Mar 6 09:38:26 2014 -0500
+
+    DesignReviewSlides Ver. 1
+    
+    Contains:
+    System-Wide
+    Hongyao
+    Yanis
+    Derrick
+    
+    Note: Derrick still needs to make changes to System-wide Class Diagram
+    and his Class Diagram, and Sequence Diagram
+
+commit c7d50f6e7f4e0f3de95e7087e288beaa64e0be59
+Author: Derrick <dward330@gmail.com>
+Date:   Wed Mar 5 10:58:33 2014 -0500
+
+    System Wide Class Diagram UML ver. 3
+    
+    System Wide Class Diagram UML ver. 3
+
+commit 5bd3944d2f7b0f35f48ba60f41ebe27ee49e1d72
+Author: Derrick <dward330@gmail.com>
+Date:   Wed Mar 5 10:57:28 2014 -0500
+
+    Derrick Track Controller UML ver. 2
+    
+    Derrick Ward Track Controller UML ver. 2
+
+commit 02b455c74dd3136fa0e6094805cf581b844fb234
+Author: honelight <honelight@hotmail.com>
+Date:   Tue Mar 4 19:32:50 2014 -0500
+
+    system diagram ver2
+
+commit a393f4f62cd0e62ea0f974d90548e96d310e80bc
+Author: Derrick <dward330@gmail.com>
+Date:   Mon Mar 3 22:23:08 2014 -0500
+
+    star ump files for trackController and systemwide class diagram ver. 1
+    
+    star ump files for trackController and systemwide class diagram
+
+commit 2013dbab6528abb2d6c5b9b7ac0de89629002007
+Author: Derrick <dward330@gmail.com>
+Date:   Mon Mar 3 22:22:18 2014 -0500
+
+    TrackController Use Cases, Descriptions, Class Diagram ver. 2
+    
+    TrackController Use Cases, Use Case Descriptions, and Class Diagram
+
+commit 02607522a6e9e23315f0a96ae51a657e13f1b1f6
+Author: Derrick <dward330@gmail.com>
+Date:   Fri Feb 28 13:20:23 2014 -0500
+
+    For Work Package 2: Use Case and Use Case Descriptions Ver. 1
+    
+    For Work Package 2: Use Case and Use Case Descriptions Ver. 1:
+    -Use Cases (3)
+    -Message Use Case Description
+    -Notify Track Malfunction Use Case Description
+    -Switch Tracks Use Case Description
+
+commit 959d509791738a73f2b6405814c4aebb4e3e638d
+Author: Derrick <dward330@gmail.com>
+Date:   Fri Feb 14 15:11:17 2014 -0500
+
+    Work Package 1 Submit Ver. 1
+    
+    This commit contains all the digital copies submitted to the TA for
+    Work Package 1
+
+commit cf6febae4276732f994e8e4afba79d99b99a8de2
+Author: Derrick <dward330@gmail.com>
+Date:   Fri Feb 14 14:42:27 2014 -0500
+
+    Track Controller User Interface Ver. 2
+    
+    Track Controller User Interface Ver. 2
+    -Derrick Ward
+
+commit 62795401431bb277d9eeb325fab80f6512a910a6
+Author: Derrick <dward330@gmail.com>
+Date:   Fri Feb 14 13:06:49 2014 -0500
+
+    Risk Assessment DKW Ver. 1
+    
+    Risk Assessment DKW Ver. 1
+
+commit 968097d61226856f7fab3cdb3dd67edae0bd63f1
+Author: Derrick <dward330@gmail.com>
+Date:   Fri Feb 14 13:03:16 2014 -0500
+
+    Track Controller Interface Ver. 1
+    
+    Track Controller Interface Ver. 1
+    -Derrick Ward
+
+commit 658a3ba1837cfdb5cb8b922349fd2e270c72e676
+Author: Derrick <dward330@gmail.com>
+Date:   Thu Feb 13 19:45:01 2014 -0500
+
+    Derrick Ward's Risk Assessment Ver. 1
+    
+    Derrick Ward's Risk Assessment Ver. 1
+
+commit af9237f5fbbeb59c4d3c9ced08c19acd7920d370
+Author: Derrick <dward330@gmail.com>
+Date:   Thu Feb 13 19:28:18 2014 -0500
+
+    Project Gantt Chart Ver. 3
+    
+    Project Gantt Chart Ver. 3
+    -Derrick Ward
+
+commit 2c32d9052099ae4c50bd0fc2d84a20a711fba741
+Author: Derrick <dward330@gmail.com>
+Date:   Thu Feb 13 19:25:06 2014 -0500
+
+    Project Gantt Chart Ver. 3
+    
+    Project Gantt Chart Ver. 3
+    -Derrick Ward
+
+commit 67bcce036e9ade916b2dbfa2697d019c289cc73d
+Author: Derrick <dward330@gmail.com>
+Date:   Thu Feb 13 19:11:13 2014 -0500
+
+    Project Gantt Chart Ver. 2
+    
+    Project Gantt Chart Ver. 2
+    -Derrick Ward
+
+commit c006f3b4da5151b4dc3ff6063dcccb150e9b8e5d
+Author: Derrick <dward330@gmail.com>
+Date:   Thu Feb 13 19:04:00 2014 -0500
+
+    Project Gantt Chart Ver. 1
+    
+    This is the Project Schedule Ver. 1
+    -Derrick Ward
+
+commit 275e6ffe40be1941bcde3b0e23b6219165c7e7b7
+Author: Derrick <dward330@gmail.com>
+Date:   Tue Feb 11 20:32:36 2014 -0500
+
+    Bug Tracking Policy Ver. 2
+    
+    Bug Tracking Policy Ver. 2
+
+commit c4c2b790b5a69f6cc6fb4099134b61983245112f
+Author: Derrick <dward330@gmail.com>
+Date:   Tue Feb 11 20:14:16 2014 -0500
+
+    Bug Tracking Policy Ver. 1
+    
+    Here is Bug Tracking Policy Ver. 1
+    -Derrick Ward
+
+commit 2b2a34e77af2a3fdb6051c92cd9c001cd63d5a63
+Author: Derrick <dward330@gmail.com>
+Date:   Tue Feb 11 12:22:53 2014 -0500
+
+    Gant Chart for Work Package 1
+    
+    This is the Gant chart for Work Package 1
+    -Derrick Ward
+
+commit d4d3de7c6a39d9ec3cd386c2f0d5608e4c8fd240
+Author: Derrick <dward330@gmail.com>
+Date:   Tue Feb 4 13:40:11 2014 -0500
+
+    SRS with Derrick's Addition
+    
+    SRS with Derrick’s Addition to Product Functions
+
+commit da2a50e723aece391c26374882d8360783974597
+Author: Derrick <dward330@gmail.com>
+Date:   Tue Feb 4 10:59:25 2014 -0500
+
+    SRS for Track Controller_Wayside Version 2
+    
+    SRS for Track Controller_Wayside Version 2
+
+commit 1a11fc550ea4a59877af1e5aa480563a4e6b406e
+Author: Derrick <dward330@gmail.com>
+Date:   Tue Jan 28 13:32:35 2014 -0500
+
+    SRS_TrackController V. 1
+
+commit 915f2685d428219f8843008ac6beec023ad6cea3
+Author: dward330 <dward330@gmail.com>
+Date:   Tue Jan 28 13:29:22 2014 -0500
+
+    Delete git_bash.txt
+
+commit d87cf9d6555008d8f48c1b3da0d9e109fdf9e711
+Author: dward330 <dward330@gmail.com>
+Date:   Tue Jan 28 13:29:08 2014 -0500
+
+    Delete CombinedCodingStandard.docx
+
+commit 8a8587df5822210d6e8a73e83cea3f6eaa68f574
+Author: dward330 <dward330@gmail.com>
+Date:   Tue Jan 28 13:29:01 2014 -0500
+
+    Delete Kai coding standard_1_20_2014.docx
+
+commit 36b76df98004ce37d549e58ebe80a47edcdb369f
+Author: dward330 <dward330@gmail.com>
+Date:   Tue Jan 28 13:25:06 2014 -0500
+
+    Delete SRS_Track_Controller
+
+commit 895177efb99730dc64109bacf5b1ee83c94d4cd5
+Merge: cd8a065 4bc30fd
+Author: SarahHHHHH <seh97@pitt.edu>
+Date:   Tue Jan 28 09:35:30 2014 -0800
+
+    Merge pull request #1 from dward330/patch-1
+    
+    Create SRS for Track Controller - Dkw
+
+commit 4bc30fd513380a3bc9492976a243816aa22d019f
+Author: dward330 <dward330@gmail.com>
+Date:   Tue Jan 28 12:21:49 2014 -0500
+
+    Create SRS for Track Controller - Dkw
+    
+    SRS for Track Controller
+
+commit cd8a065ed02f9f36c49bc18d367a4599381d85c7
+Author: SarahHHHHH <seh97@pitt.edu>
+Date:   Sun Jan 26 12:12:37 2014 -0500
+
+    Revised coding standard
+
+commit 66d6bc28808bec8ed220eee0bc59447770e54401
+Author: SarahHHHHH <seh97@pitt.edu>
+Date:   Mon Jan 20 12:29:38 2014 -0500
+
+    bash command reminders
+
+commit 73b83104d263532e6fd141ad6c23c989a2a98f5d
+Author: SarahHHHHH <seh97@pitt.edu>
+Date:   Sun Jan 26 11:19:00 2014 -0500
+
+    Delete text.txt
+
+commit 982cda56b02d0f793907e7f9920d067db4966f97
+Author: kaz35 <kaz35@trinitycoreinc.com>
+Date:   Mon Jan 20 12:14:19 2014 -0500
+
+    dddddd
+
+commit b5695576d632f61ec3e4912a98b0e785f71cc196
+Author: SarahHHHHH <seh97@pitt.edu>
+Date:   Mon Jan 20 11:50:07 2014 -0500
+
+    initial commit

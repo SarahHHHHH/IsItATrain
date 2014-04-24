@@ -8,6 +8,7 @@
  */
 package TrainSimulator;
 import java.util.ArrayList;
+import java.io.*;
 
 
 /**
@@ -46,8 +47,13 @@ public class RailwayCrossing {
 			* 	FALSE	FALSE	   FALSE
 	*/
 	//stores logic to be loaded
-	this.logicToLoad = "(1&(!))";
-	
+	//this.logicToLoad = "(1&(!))";
+	try{
+            this.logicToLoad = (new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream("railCrossingPullDownLogic.txt"))))).readLine();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 	//Instantiate PLC Program(3 of them), with the needed logic -> Done
 	for (int counter = 0; counter < 3; counter++)
 			this.railwayCrossingPullDown.add(new ValidateBooleanLogic(this.logicToLoad));
@@ -63,8 +69,13 @@ public class RailwayCrossing {
 			* 	FALSE	FALSE	   TRUE
 	*/
 	//stores logic to be loaded
-	this.logicToLoad = "(!&(!))";
-	
+	//this.logicToLoad = "(!&(!))";
+	try{
+            this.logicToLoad = (new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream("railCrossingPullUpLogic.txt"))))).readLine();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 	//Instantiate PLC Program(3 of them), with the needed logic -> Done
 	for (int counter = 0; counter < 3; counter++)
 			this.railwayCrossingPullUp.add(new ValidateBooleanLogic(this.logicToLoad));
